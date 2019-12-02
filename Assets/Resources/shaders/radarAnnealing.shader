@@ -45,8 +45,9 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float originalIntensity = tex2D(_MainTex, i.uv).r;
-				return saturate(originalIntensity * _AnnealingSpeedMultiplier + _AnnealingSpeedOffset);
+				float2 originalColors = tex2D(_MainTex, i.uv).rg;
+				float originalIntensity = originalColors.r;
+				return float4(saturate(originalIntensity * _AnnealingSpeedMultiplier + _AnnealingSpeedOffset), originalColors.g,0,1);
             }
             ENDCG
         }

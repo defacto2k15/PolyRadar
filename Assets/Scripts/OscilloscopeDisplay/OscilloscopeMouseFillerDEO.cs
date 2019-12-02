@@ -7,10 +7,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.OscilloscopeDisplay
 {
-    public class OscilloscopeDisplayDEO : MonoBehaviour
+    public class OscilloscopeMouseFillerDEO : MonoBehaviour
     {
         public OscilloscopeIntensityTextureContainerOC IntensityTextureContainerOc;
         public Material MouseFillingMaterial;
+        [Range(0,1)]
+        public float DotSize;
 
         public void Update()
         {
@@ -24,6 +26,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
         private void FillRadarIntensityWithMousePositionDot(Vector2 mouseUv)
         {
             MouseFillingMaterial.SetVector("_MouseUvPosition", mouseUv);
+            MouseFillingMaterial.SetFloat("_DotSize", DotSize);
             IntensityTextureContainerOc.ApplyTransformingMaterial(MouseFillingMaterial);
         }
     }

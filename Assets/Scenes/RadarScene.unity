@@ -249,6 +249,7 @@ MonoBehaviour:
   IntensityTextureContainerOc: {fileID: 502113604}
   MouseFillingMaterial: {fileID: 2100000, guid: 862e9390824cd4d4c94ab95cb4fd64c2,
     type: 2}
+  DotSize: 0.06
 --- !u!114 &502113604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +311,7 @@ MonoBehaviour:
   BeamIntensityTextureLength: 128
   RadarWholeRotationTimeInSeconds: 2
   BeamAngleInDegrees: 0
+  BeamIndicatorSize: 0.02
 --- !u!114 &502113608
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ namespace Assets.Scripts.OscilloscopeDisplay
         [Range(0,360)]
         public float BeamAngleInDegrees;
 
+        [Range(0, 0.2f)] public float BeamIndicatorSize;
+
         private float _previousBeamAngleInDegrees;
         private Texture2D _beamIntensityTexture;
 
@@ -68,6 +70,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
             RadarBeamApplyingMaterial.SetFloat("_BeamAngleInDegrees", angle);
             RadarBeamApplyingMaterial.SetFloat("_BeamAngleInDegreesDelta", BeamAngleInDegrees - _previousBeamAngleInDegrees);
             RadarBeamApplyingMaterial.SetTexture("_BeamIntensityTexture", _beamIntensityTexture);
+            RadarBeamApplyingMaterial.SetFloat("_BeamIndicatorSize",BeamIndicatorSize);
             IntensityTextureContainer.ApplyTransformingMaterial(RadarBeamApplyingMaterial);
         }
     }

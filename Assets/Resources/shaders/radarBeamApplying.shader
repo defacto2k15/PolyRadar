@@ -7,6 +7,7 @@
         _BeamIntensityTexture("BeamIntensityTexture", 2D) = "blue" {}
 		_BeamAngleInDegrees("BeamAngleInDegrees", Range(0,360)) = 0
 		_BeamAngleInDegreesDelta("BeamAngleInDegreesDelta", Range(0,360)) = 0
+		_BeamIndicatorSizeInDegrees("BeamIndicatorSizeInDegrees", Range(0,360)) = 6
     }
     SubShader
     {
@@ -38,6 +39,7 @@
 			float _BeamAngleInDegrees;
 			float _BeamAngleInDegreesDelta;
 			float _UpdateAngleDistanceInDegrees;
+			float _BeamIndicatorSize;
 
             v2f vert (appdata v)
             {
@@ -53,11 +55,11 @@
 				float r = length(centeredUv);
 				float phi = atan2(centeredUv.y , centeredUv.x);
 
-				float intensity = tex2D(_MainTex, i.uv).r;
+				float2 originalColor = tex2D(_MainTex, i.uv).rg;
+				float intensity = originalColor.r;
 				
 				float angleDifference = (phi - radians(_BeamAngleInDegrees));
 				float prevFrameDelta = _BeamAngleInDegreesDelta;
-				//if (sign(angleDelta) != sign(_BeamAngleInDegreesDelta)) {
 				if (sign(prevFrameDelta) != 0) {
 					if (sign(prevFrameDelta) != sign(angleDifference)) {
 						float angleLength = abs(angleDifference);
@@ -65,7 +67,12 @@
 					}
 				}
 
-				return intensity;
+				float beamIndicatorIntensity = 0;
+				if (abs(angleDifference)*r < _BeamIndicatorSize){
+					beamIndicatorIntensity = 1;
+				}
+
+				return float4(intensity, beamIndicatorIntensity,0,1);
             }
             ENDCG
         }

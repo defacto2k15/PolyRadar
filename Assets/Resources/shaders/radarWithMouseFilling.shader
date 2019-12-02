@@ -4,6 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "blue" {}
 		_MouseUvPosition("MouseUvPosition", Vector) = (0.0, 0.0, 0.0, 0.0)
+		_DotSize("DotSize", Range(0,1)) = 0.1
     }
     SubShader
     {
@@ -32,6 +33,7 @@
 
             sampler2D _MainTex;
 			float4 _MouseUvPosition;
+			float _DotSize;
 
             v2f vert (appdata v)
             {
@@ -43,13 +45,13 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float intensity = tex2D(_MainTex, i.uv).r;
+				float2 originalColors = tex2D(_MainTex, i.uv).rg;
+				float intensity = originalColors.r;
 
 				float distanceToMouse = length(i.uv - _MouseUvPosition.xy);
-				float minDistance = 0.2;
-				float byDistanceIntensity = saturate(1 - distanceToMouse / minDistance);
+				float byDistanceIntensity = saturate(1 - distanceToMouse / _DotSize);
 
-				return max(intensity, byDistanceIntensity);
+				return float4( max(intensity, byDistanceIntensity), originalColors.g,0,1);
             }
             ENDCG
         }
