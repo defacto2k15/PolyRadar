@@ -225,6 +225,8 @@ GameObject:
   - component: {fileID: 502113604}
   - component: {fileID: 502113603}
   - component: {fileID: 502113606}
+  - component: {fileID: 502113607}
+  - component: {fileID: 502113608}
   m_Layer: 0
   m_Name: RootDebug
   m_TagString: Untagged
@@ -244,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4acee1e7ae6702942ab25c5756537904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IntensityTextureOc: {fileID: 502113604}
+  IntensityTextureContainerOc: {fileID: 502113604}
   MouseFillingMaterial: {fileID: 2100000, guid: 862e9390824cd4d4c94ab95cb4fd64c2,
     type: 2}
 --- !u!114 &502113604
@@ -259,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa6fc02ea7fe6746a2ee831e4ef4b45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: {x: 128, y: 128}
+  Size: {x: 1024, y: 1024}
 --- !u!4 &502113605
 Transform:
   m_ObjectHideFlags: 0
@@ -286,10 +288,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5767abd2dc5700e4cb8877cb8695163c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IntensityTextureOc: {fileID: 502113604}
+  IntensityTextureContainerOc: {fileID: 502113604}
   AnnealingMaterial: {fileID: 2100000, guid: ee7b071b979db3840b78f2a234205f7b, type: 2}
-  AnnealingMultiplierPerSecond: 0.99
-  AnnealingOffsetPerSecond: -0.02
+  AnnealingMultiplierPerSecond: 0.5
+  AnnealingOffsetPerSecond: -0.5
+--- !u!114 &502113607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502113602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45041d44c3d225449bafff5b793577d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IntensityTextureContainer: {fileID: 502113604}
+  RadarBeamApplyingMaterial: {fileID: 2100000, guid: 1df3bff35ccd3ff4abcd7d056984b99c,
+    type: 2}
+  BeamIntensityTextureLength: 128
+  RadarWholeRotationTimeInSeconds: 2
+  BeamAngleInDegrees: 0
+--- !u!114 &502113608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502113602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda06002efe3d2349b63a3b18c294568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSpeedInDegreesPerSecond: 20
+  BeamManager: {fileID: 502113607}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535f5933c78092847b13ccb0607f9ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IntensityTextureOc: {fileID: 502113604}
+  IntensityTextureContainerOc: {fileID: 502113604}
 --- !u!64 &1378668697
 MeshCollider:
   m_ObjectHideFlags: 0

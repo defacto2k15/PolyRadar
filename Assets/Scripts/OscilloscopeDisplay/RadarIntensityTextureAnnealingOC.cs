@@ -9,7 +9,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 {
     public class RadarIntensityTextureAnnealingOC : MonoBehaviour
     {
-        public OscilloscopeIntensityTextureOC IntensityTextureOc;
+        public OscilloscopeIntensityTextureContainerOC IntensityTextureContainerOc;
         public Material AnnealingMaterial;
         [Range(0,1)]
         public float AnnealingMultiplierPerSecond;
@@ -18,13 +18,14 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
         public void Update()
         {
-            var intensityTexture = IntensityTextureOc.IntensityTexture;
-            var workCopy = IntensityTextureOc.RetrieveIntensityTextureCopy();
+            var currentFps = 1f / Time.deltaTime;
 
-            AnnealingMaterial.SetTexture("_OscilloscopeIntensityTex", workCopy);
-            AnnealingMaterial.SetFloat("_AnnealingSpeedMultiplier",AnnealingMultiplierPerSecond);
-            AnnealingMaterial.SetFloat("_AnnealingSpeedOffset", AnnealingOffsetPerSecond);
-            Graphics.Blit(workCopy, intensityTexture, AnnealingMaterial);
+            var perFrameAnnealingSpeedMultiplier = Mathf.Pow(AnnealingMultiplierPerSecond, 1 / currentFps);
+            var perFrameAnnealingSpeedOffset = AnnealingOffsetPerSecond / currentFps;
+
+            AnnealingMaterial.SetFloat("_AnnealingSpeedMultiplier", perFrameAnnealingSpeedMultiplier);
+            AnnealingMaterial.SetFloat("_AnnealingSpeedOffset", perFrameAnnealingSpeedOffset);
+            IntensityTextureContainerOc.ApplyTransformingMaterial(AnnealingMaterial);
         }
     }
 }

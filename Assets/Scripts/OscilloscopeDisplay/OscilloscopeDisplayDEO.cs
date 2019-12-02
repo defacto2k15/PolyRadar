@@ -9,7 +9,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 {
     public class OscilloscopeDisplayDEO : MonoBehaviour
     {
-        public OscilloscopeIntensityTextureOC IntensityTextureOc;
+        public OscilloscopeIntensityTextureContainerOC IntensityTextureContainerOc;
         public Material MouseFillingMaterial;
 
         public void Update()
@@ -23,10 +23,8 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
         private void FillRadarIntensityWithMousePositionDot(Vector2 mouseUv)
         {
-            var workCopy = IntensityTextureOc.RetrieveIntensityTextureCopy();
-            MouseFillingMaterial.SetTexture("_MainTex", workCopy);
             MouseFillingMaterial.SetVector("_MouseUvPosition", mouseUv);
-            Graphics.Blit(workCopy, IntensityTextureOc.IntensityTexture, MouseFillingMaterial);
+            IntensityTextureContainerOc.ApplyTransformingMaterial(MouseFillingMaterial);
         }
     }
 }

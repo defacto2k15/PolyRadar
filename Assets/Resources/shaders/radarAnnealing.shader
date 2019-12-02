@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _OscilloscopeIntensityTex("OscilloscopeIntensityTex", 2D) = "blue" {}
+        _MainTex("MainTex", 2D) = "blue" {}
 		_AnnealingSpeedMultiplier("AnnealingSpeedMultiplier", Range(0,1)) = 0.9
 		_AnnealingSpeedOffset("AnnealingSpeedMultiplier", Range(-1,1)) = -0.01
     }
@@ -31,7 +31,7 @@
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _OscilloscopeIntensityTex;
+            sampler2D _MainTex;
 			float _AnnealingSpeedMultiplier;
 			float _AnnealingSpeedOffset;
 
@@ -45,7 +45,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float originalIntensity = tex2D(_OscilloscopeIntensityTex, i.uv).r;
+				float originalIntensity = tex2D(_MainTex, i.uv).r;
 				return saturate(originalIntensity * _AnnealingSpeedMultiplier + _AnnealingSpeedOffset);
             }
             ENDCG
