@@ -19,7 +19,12 @@ namespace Assets.Scripts.OscilloscopeDisplay
         public void Update()
         {
             var intensityTexture = IntensityTextureOc.IntensityTexture;
-            var workCopy = IntensityTextureOc.RetriveIntensityTextureCopy();
+            var workCopy = IntensityTextureOc.RetrieveIntensityTextureCopy();
+
+            AnnealingMaterial.SetTexture("_OscilloscopeIntensityTex", workCopy);
+            AnnealingMaterial.SetFloat("_AnnealingSpeedMultiplier",AnnealingMultiplierPerSecond);
+            AnnealingMaterial.SetFloat("_AnnealingSpeedOffset", AnnealingOffsetPerSecond);
+            Graphics.Blit(workCopy, intensityTexture, AnnealingMaterial);
         }
     }
 }

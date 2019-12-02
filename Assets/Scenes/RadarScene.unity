@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 502113605}
   - component: {fileID: 502113604}
   - component: {fileID: 502113603}
+  - component: {fileID: 502113606}
   m_Layer: 0
   m_Name: RootDebug
   m_TagString: Untagged
@@ -244,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IntensityTextureOc: {fileID: 502113604}
+  MouseFillingMaterial: {fileID: 2100000, guid: 862e9390824cd4d4c94ab95cb4fd64c2,
+    type: 2}
 --- !u!114 &502113604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +274,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &502113606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502113602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5767abd2dc5700e4cb8877cb8695163c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IntensityTextureOc: {fileID: 502113604}
+  AnnealingMaterial: {fileID: 2100000, guid: ee7b071b979db3840b78f2a234205f7b, type: 2}
+  AnnealingMultiplierPerSecond: 0.99
+  AnnealingOffsetPerSecond: -0.02
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

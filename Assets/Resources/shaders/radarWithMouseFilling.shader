@@ -1,10 +1,9 @@
-﻿Shader "Custom/RadarAnnealing"
+﻿Shader "Custom/RadarWithMouseFilling"
 {
     Properties
     {
-        _OscilloscopeIntensityTex("OscilloscopeIntensityTex", 2D) = "blue" {}
-		_AnnealingSpeedMultiplier("AnnealingSpeedMultiplier", Range(0,1)) = 0.9
-		_AnnealingSpeedOffset("AnnealingSpeedMultiplier", Range(-1,1)) = -0.01
+        _MainTex ("Texture", 2D) = "blue" {}
+		_MouseUvPosition("MouseUvPosition", Vector) = (0.0, 0.0, 0.0, 0.0)
     }
     SubShader
     {
@@ -31,9 +30,8 @@
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _OscilloscopeIntensityTex;
-			float _AnnealingSpeedMultiplier;
-			float _AnnealingSpeedOffset;
+            sampler2D _MainTex;
+			float4 _MouseUvPosition;
 
             v2f vert (appdata v)
             {
@@ -45,8 +43,13 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float originalIntensity = tex2D(_OscilloscopeIntensityTex, i.uv).r;
-				return saturate(originalIntensity * _AnnealingSpeedMultiplier + _AnnealingSpeedOffset);
+				float intensity = tex2D(_MainTex, i.uv).r;
+
+				float distanceToMouse = length(i.uv - _MouseUvPosition.xy);
+				float minDistance = 0.2;
+				float byDistanceIntensity = saturate(1 - distanceToMouse / minDistance);
+
+				return max(intensity, byDistanceIntensity);
             }
             ENDCG
         }
