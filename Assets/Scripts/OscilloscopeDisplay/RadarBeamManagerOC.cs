@@ -10,6 +10,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 {
     public class RadarBeamManagerOC : MonoBehaviour
     {
+        public GameObject RadarIndicatorObject;
         public OscilloscopeIntensityTextureContainerOC IntensityTextureContainer;
         public Material RadarBeamApplyingMaterial;
         public int BeamIntensityTextureLength = 0;
@@ -32,6 +33,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
         public void Update()
         {
+            RadarIndicatorObject.transform.localRotation = Quaternion.Euler(RadarIndicatorObject.transform.localEulerAngles.x, -BeamAngleInDegrees-90, RadarIndicatorObject.transform.localEulerAngles.z);
             var beamIntensityArray = CollectBeamIntensityData();
             FillBeamIntensityTexture(beamIntensityArray);
             AddBeamDataToOscilloscope();
@@ -50,18 +52,15 @@ namespace Assets.Scripts.OscilloscopeDisplay
                 //new Vector2(-0.7f, -0.8f),
                 //new Vector2(-0.7f, 0.1f),
             };
-            var max = 0f;
             for (int i = 0; i < BeamIntensityTextureLength; i++)
             {
                 var rAndPhi = new Vector2(i/((float)BeamIntensityTextureLength), BeamAngleInDegrees*Mathf.Deg2Rad);
                 var coords = MathUtils.PolarToCartesian(rAndPhi);
                 var distanceToClosestTarget = debugRadarTargets.Select(c => Vector2.Distance(coords, c)).Min();
                 var intensityFromClosest = Mathf.Max(0, 1 - distanceToClosestTarget*DebugDistanceToClosestTargetMultiplier) * DebugTargetIntensityMultiplier;
-                max = Mathf.Max(intensityFromClosest, max);
 
                 outArray[i] = intensityFromClosest;
             }
-            Debug.Log("Max is "+max);
 
             return outArray;
         }

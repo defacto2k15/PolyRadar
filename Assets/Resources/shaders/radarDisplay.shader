@@ -3,9 +3,10 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "blue" {}
-		_IntensityAdding("IntensityAdding", Range(0,2)) = 0
+		_IntensityAdding("IntensityAdding", Range(0,10)) = 0
 		_RadarColor("RadarColor", Vector) = (0.0,1.0,0.0,0.0)
 		_LerpToWhiteFactor("LerpToWhiteFactor", Range(0,3)) = 1.0
+		_IndicatorIntensity("IndicatorIntensity", Range(0,1)) = 0.1
     }
     SubShader
     {
@@ -37,6 +38,7 @@
 			float _IntensityAdding;
 			float4 _RadarColor;
 			float _LerpToWhiteFactor;
+			float _IndicatorIntensity;
 
             v2f vert (appdata v)
             {
@@ -54,7 +56,7 @@
             float4 frag (v2f i) : SV_Target
             {
 				float4 sampledColor = tex2D(_MainTex, i.uv);
-				float intensity = max(sampledColor.x, sampledColor.y);
+				float intensity = max(sampledColor.x, sampledColor.y*_IndicatorIntensity);
 				float3 baseColor = lerp(_RadarColor.rgb, 1, intensity*_LerpToWhiteFactor);
 				
 				float4 col= float4(0,0,0,1);
