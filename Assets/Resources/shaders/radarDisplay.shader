@@ -1,8 +1,11 @@
-﻿Shader "Custom/RadarDebug"
+﻿Shader "Custom/RadarDisplay"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "blue" {}
+		_IntensityAdding("IntensityAdding", Range(0,2)) = 0
+		_RadarColor("RadarColor", Vector) = (0.0,1.0,0.0,0.0)
+		_LerpToWhiteFactor("LerpToWhiteFactor", Range(0,3)) = 1.0
     }
     SubShader
     {
@@ -31,6 +34,9 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+			float _IntensityAdding;
+			float4 _RadarColor;
+			float _LerpToWhiteFactor;
 
             v2f vert (appdata v)
             {
@@ -40,9 +46,23 @@
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+			float invLerpSaturated(float val, float min, float max) {
+				float delta = max - min;
+				return saturate((val - min) / delta);
+			}
+
+            float4 frag (v2f i) : SV_Target
             {
-				fixed4 col = tex2D(_MainTex, i.uv);
+				float4 sampledColor = tex2D(_MainTex, i.uv);
+				float intensity = max(sampledColor.x, sampledColor.y);
+				float3 baseColor = lerp(_RadarColor.rgb, 1, intensity*_LerpToWhiteFactor);
+				
+				float4 col= float4(0,0,0,1);
+				col.rgb = baseColor*intensity;
+				col.rgb *= (1 + _IntensityAdding);
+
+				float distanceToCenter = length(i.uv - 0.5) * 2;
+				col = lerp(0, col, invLerpSaturated(distanceToCenter, 1, 0.95));
                 return col;
             }
             ENDCG

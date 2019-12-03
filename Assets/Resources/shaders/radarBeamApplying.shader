@@ -8,6 +8,9 @@
 		_BeamAngleInDegrees("BeamAngleInDegrees", Range(0,360)) = 0
 		_BeamAngleInDegreesDelta("BeamAngleInDegreesDelta", Range(0,360)) = 0
 		_BeamIndicatorSizeInDegrees("BeamIndicatorSizeInDegrees", Range(0,360)) = 6
+		_RadialNoiseMultiplier("RadialNoiseMultiplier", Vector) = (1.0,1.0,1.0,0.0)
+		_CartesianNoiseMultiplier("CartesianNoiseMultiplier", Vector) = (1.0, 1.0, 1.0, 0.0)
+		_BeamIndicatorSize("BeamIndicatorSize",Range(0,1)) = 0.02
     }
     SubShader
     {
@@ -21,6 +24,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+			#include "ClassicNoise2D.hlsl"
 
             struct appdata
             {
@@ -40,6 +44,8 @@
 			float _BeamAngleInDegreesDelta;
 			float _UpdateAngleDistanceInDegrees;
 			float _BeamIndicatorSize;
+			float4 _RadialNoiseMultiplier;
+			float4 _CartesianNoiseMultiplier;
 
             v2f vert (appdata v)
             {
@@ -48,6 +54,14 @@
 				o.uv = v.uv;
                 return o;
             }
+
+			float sampleBeamIntensityTexture(float r, float phi) {
+				return tex2D(_BeamIntensityTexture, float2(0, r)).r;
+			}
+
+			float2 toCartesian(float2 rAndPhi) {
+				return float2(rAndPhi.x*cos(rAndPhi.y), rAndPhi.x*sin(rAndPhi.y));
+			}
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -62,8 +76,16 @@
 				float prevFrameDelta = _BeamAngleInDegreesDelta;
 				if (sign(prevFrameDelta) != 0) {
 					if (sign(prevFrameDelta) != sign(angleDifference)) {
+
 						float angleLength = abs(angleDifference);
-						intensity = max(intensity, (1 - angleLength / radians(_UpdateAngleDistanceInDegrees)));
+						float oldAreaMultiplier = saturate(1 - angleLength / radians(_UpdateAngleDistanceInDegrees));
+
+						float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
+						float2 cartesianCoords = float2(312.123, -521.31234) + toCartesian(float2(r, phi));
+						float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
+						float beamIntensity = sampleBeamIntensityTexture(r, phi);
+
+						intensity = max(intensity, max(beamIntensity,max(cartesianNoiseIntensity, radialNoiseIntensity))*oldAreaMultiplier);
 					}
 				}
 

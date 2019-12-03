@@ -43,7 +43,7 @@
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
 				float2 originalColors = tex2D(_MainTex, i.uv).rg;
 				float originalIntensity = originalColors.r;

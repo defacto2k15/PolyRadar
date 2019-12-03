@@ -18,10 +18,12 @@ namespace Assets.Scripts.OscilloscopeDisplay
         [Range(0,360)]
         public float BeamAngleInDegrees;
 
-        [Range(0, 0.2f)] public float BeamIndicatorSize;
-
         private float _previousBeamAngleInDegrees;
         private Texture2D _beamIntensityTexture;
+
+        [Range(0, 200)] public float DebugDistanceToClosestTargetMultiplier = 20;
+
+        [Range(0, 20)] public float DebugTargetIntensityMultiplier = 1;
 
         public void Start()
         {
@@ -39,10 +41,27 @@ namespace Assets.Scripts.OscilloscopeDisplay
         private float[] CollectBeamIntensityData()
         {
             var outArray = new float[BeamIntensityTextureLength];
+            var debugRadarTargets = new List<Vector2>()
+            {
+                new Vector2(0.3f, 0.3f),
+                new Vector2(0.3f, 0.5f),
+                //new Vector2(0.7f, 0.8f),
+                //new Vector2(-0.7f, 0.8f),
+                //new Vector2(-0.7f, -0.8f),
+                //new Vector2(-0.7f, 0.1f),
+            };
+            var max = 0f;
             for (int i = 0; i < BeamIntensityTextureLength; i++)
             {
-                outArray[i] = (Mathf.Abs(i - BeamIntensityTextureLength / 2) / ((float) BeamIntensityTextureLength)) * 2;
+                var rAndPhi = new Vector2(i/((float)BeamIntensityTextureLength), BeamAngleInDegrees*Mathf.Deg2Rad);
+                var coords = MathUtils.PolarToCartesian(rAndPhi);
+                var distanceToClosestTarget = debugRadarTargets.Select(c => Vector2.Distance(coords, c)).Min();
+                var intensityFromClosest = Mathf.Max(0, 1 - distanceToClosestTarget*DebugDistanceToClosestTargetMultiplier) * DebugTargetIntensityMultiplier;
+                max = Mathf.Max(intensityFromClosest, max);
+
+                outArray[i] = intensityFromClosest;
             }
+            Debug.Log("Max is "+max);
 
             return outArray;
         }
@@ -70,7 +89,6 @@ namespace Assets.Scripts.OscilloscopeDisplay
             RadarBeamApplyingMaterial.SetFloat("_BeamAngleInDegrees", angle);
             RadarBeamApplyingMaterial.SetFloat("_BeamAngleInDegreesDelta", BeamAngleInDegrees - _previousBeamAngleInDegrees);
             RadarBeamApplyingMaterial.SetTexture("_BeamIntensityTexture", _beamIntensityTexture);
-            RadarBeamApplyingMaterial.SetFloat("_BeamIndicatorSize",BeamIndicatorSize);
             IntensityTextureContainer.ApplyTransformingMaterial(RadarBeamApplyingMaterial);
         }
     }

@@ -16,7 +16,6 @@ namespace Assets.Scripts.OscilloscopeDisplay
         public void Update()
         {
             BeamManager.BeamAngleInDegrees += RotationSpeedInDegreesPerSecond * Time.deltaTime;
-
         }
     }
 }

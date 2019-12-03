@@ -1,6 +1,9 @@
 ﻿Shader "Custom/BloomPostProcessing" {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
+		_Threshold("Threshold", Range(0,10)) = 0.4
+		_SoftThreshold("SoftThreshold", Range(0,1)) = 0.1
+		_BloomIntensity("BloomIntensity", Range(0,10)) = 1
 	}
 
 	CGINCLUDE
@@ -11,7 +14,7 @@
 		sampler2D _SourceTex;
 		half _Threshold;
 		half _SoftThreshold;
-		half _Intensity;
+		half _BloomIntensity;
 
 		struct VertexData {
 			float4 vertex : POSITION;
@@ -97,7 +100,7 @@
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
 					half4 c = tex2D(_SourceTex, i.uv);
-					c.rgb += _Intensity*SampleBox(i.uv, 0.5);
+					c.rgb += _BloomIntensity*SampleBox(i.uv, 0.5);
 					return c;
 				}
 			ENDCG
@@ -108,7 +111,7 @@
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
-					return half4(_Intensity*SampleBox(i.uv, 0.5), 1);
+					return half4(_BloomIntensity*SampleBox(i.uv, 0.5), 1);
 				}
 			ENDCG
 		}
