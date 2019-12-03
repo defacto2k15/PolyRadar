@@ -16,7 +16,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
         public void Start()
         {
-            _intensityTextures = Enumerable.Range(0,2).Select(i =>  new RenderTexture(Size.x, Size.y, 0, RenderTextureFormat.ARGB32)).ToList();
+            _intensityTextures = Enumerable.Range(0,2).Select(i =>  new RenderTexture(Size.x, Size.y, 0, RenderTextureFormat.RGFloat)).ToList();
             _intensityTextures.ForEach(c=>c.Create());
         }
 
