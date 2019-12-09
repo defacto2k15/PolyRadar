@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RadarBeamApplyingMat
+  m_Name: RadarTextureUpdaterMat
   m_Shader: {fileID: 4800000, guid: 4dc3755fe9474b04787df0514960f3ab, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -43,11 +43,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HeightEdges:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MasterHeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionEdges:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionHeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -60,8 +76,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BeamAngleInDegrees: -129.15942
-    - _BeamAngleInDegreesDelta: 0.6047363
+    - _AnnealingSpeedMultiplier: 0.9920588
+    - _AnnealingSpeedOffset: -0.0057512
+    - _BeamAngleInDegrees: 164.85205
+    - _BeamAngleInDegreesDelta: 0.623291
     - _BeamIndicatorSize: 0.01
     - _BeamIndicatorSizeInDegrees: 90
     - _BumpScale: 1
@@ -79,11 +97,11 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UpdateAngleDistanceInDegrees: 7.5311995
+    - _UpdateAngleDistanceInDegrees: 4.945464
     - _ZWrite: 1
     m_Colors:
-    - _CartesianNoiseMultiplier: {r: 10, g: 10, b: 0.1, a: 0}
+    - _CartesianNoiseMultiplier: {r: 10, g: 10, b: 0.2, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Deb: {r: 3, g: 10, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RadialNoiseMultiplier: {r: 4, g: 5, b: 0.1, a: 0.2}
+    - _RadialNoiseMultiplier: {r: 4, g: 5, b: 0.2, a: 0}

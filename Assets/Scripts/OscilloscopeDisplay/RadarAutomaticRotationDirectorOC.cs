@@ -11,11 +11,11 @@ namespace Assets.Scripts.OscilloscopeDisplay
     {
         [Range(0,360)]
         public float RotationSpeedInDegreesPerSecond;
-        public RadarBeamManagerOC BeamManager;
+        public RadarTextureManagerOC TextureManager;
 
         public void Update()
         {
-            BeamManager.BeamAngleInDegrees += RotationSpeedInDegreesPerSecond * Time.deltaTime;
+            TextureManager.BeamAngleInDegrees += RotationSpeedInDegreesPerSecond * Time.deltaTime;
         }
     }
 }

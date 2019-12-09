@@ -1,9 +1,8 @@
-﻿Shader "Custom/RadarBeamApplying"
+﻿Shader "Custom/RadarTextureUpdater"
 {
     Properties
     {
         _MainTex("MainTex", 2D) = "blue" {}
-		_UpdateAngleDistanceInDegrees("_UpdateAngleDistanceInDegrees", Range(0,360)) = 30
         _BeamIntensityTexture("BeamIntensityTexture", 2D) = "blue" {}
 		_BeamAngleInDegrees("BeamAngleInDegrees", Range(0,360)) = 0
 		_BeamAngleInDegreesDelta("BeamAngleInDegreesDelta", Range(0,360)) = 0
@@ -11,6 +10,12 @@
 		_RadialNoiseMultiplier("RadialNoiseMultiplier", Vector) = (1.0,1.0,1.0,0.0)
 		_CartesianNoiseMultiplier("CartesianNoiseMultiplier", Vector) = (1.0, 1.0, 1.0, 0.0)
 		_BeamIndicatorSize("BeamIndicatorSize",Range(0,1)) = 0.02
+
+		_AnnealingSpeedMultiplier("AnnealingSpeedMultiplier", Range(0,1)) = 0.9
+		_AnnealingSpeedOffset("AnnealingSpeedMultiplier", Range(-1,1)) = -0.01
+
+		_OcclusionHeightMap("OcclusionHeightMap", 2D) = "blue" {}
+		_OcclusionEdges("_OcclusionEdges", 2D) = "blue" {}
     }
     SubShader
     {
@@ -42,10 +47,15 @@
             sampler2D _BeamIntensityTexture;
 			float _BeamAngleInDegrees;
 			float _BeamAngleInDegreesDelta;
-			float _UpdateAngleDistanceInDegrees;
 			float _BeamIndicatorSize;
 			float4 _RadialNoiseMultiplier;
 			float4 _CartesianNoiseMultiplier;
+
+			float _AnnealingSpeedMultiplier;
+			float _AnnealingSpeedOffset;
+
+			sampler2D _OcclusionHeightMap;
+			sampler2D _OcclusionEdges;
 
             v2f vert (appdata v)
             {
@@ -63,6 +73,12 @@
 				return float2(rAndPhi.x*cos(rAndPhi.y), rAndPhi.x*sin(rAndPhi.y));
 			}
 
+			float applyAnnealing(float i, float annealingIntensity) {
+				return saturate(i* lerp(1,_AnnealingSpeedMultiplier,annealingIntensity) + _AnnealingSpeedOffset*annealingIntensity);
+			}
+
+			static const float PI = 3.141592653589793238462;
+
             fixed4 frag (v2f i) : SV_Target
             {
 				float2 centeredUv = (i.uv - 0.5) * 2;
@@ -72,27 +88,35 @@
 				float2 originalColor = tex2D(_MainTex, i.uv).rg;
 				float intensity = originalColor.r;
 				
-				float angleDifference = (phi - radians(_BeamAngleInDegrees));
-				float prevFrameDelta = _BeamAngleInDegreesDelta;
-				if (sign(prevFrameDelta) != 0) {
-					if (sign(prevFrameDelta) != sign(angleDifference)) {
-
-						float angleLength = abs(angleDifference);
-						float oldAreaMultiplier = saturate(1 - angleLength / radians(_UpdateAngleDistanceInDegrees));
-
-						float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
-						float2 cartesianCoords = float2(312.123, -521.31234) + toCartesian(float2(r, phi));
-						float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
-						float beamIntensity = sampleBeamIntensityTexture(r, phi);
-
-						intensity = max(intensity, max(beamIntensity,max(cartesianNoiseIntensity, radialNoiseIntensity))*oldAreaMultiplier);
-					}
+				float angleDifference = ( radians(_BeamAngleInDegrees)-phi);
+				if (angleDifference < 0) {
+					angleDifference += 2 * PI;
 				}
+				float frameAngleDelta = radians(_BeamAngleInDegreesDelta);
+
+				float annealingIntensity = 1;
+				if (angleDifference < frameAngleDelta) {
+					annealingIntensity = angleDifference / frameAngleDelta;
+
+
+					float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
+					float2 cartesianCoords = float2(312.123, -521.31234) + toCartesian(float2(r, phi));
+					float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
+					float beamIntensity = sampleBeamIntensityTexture(r, phi);
+
+					intensity = max(intensity, max(beamIntensity,max(cartesianNoiseIntensity, radialNoiseIntensity)));
+				}
+
+				intensity = applyAnnealing(intensity, annealingIntensity);
 
 				float beamIndicatorIntensity = 0;
 				if (abs(angleDifference)*r < _BeamIndicatorSize){
 					beamIndicatorIntensity = 1;
 				}
+
+				float2 polarUv = float2(r, (phi/(2*PI))+0.5);
+				intensity = tex2D(_OcclusionHeightMap, polarUv);
+				//intensity = tex2D(_OcclusionEdges, polarUv).a;
 
 				return float4(intensity, beamIndicatorIntensity,0,1);
             }
