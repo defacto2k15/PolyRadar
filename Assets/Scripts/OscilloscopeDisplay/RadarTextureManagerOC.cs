@@ -37,7 +37,11 @@ namespace Assets.Scripts.OscilloscopeDisplay
                     var battlegroundOcclusionTexturesPack = BattlegroundMasterScript.PatternMapsManager.BattlegroundOcclusionTextures;
                     RadarTextureUpdaterMaterial.SetTexture("_OcclusionHeightMap", battlegroundOcclusionTexturesPack.OcclusionHeightMap);
                     RadarTextureUpdaterMaterial.SetTexture("_OcclusionEdges", battlegroundOcclusionTexturesPack.OcclussionEdges);
-                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundPatternTexture", BattlegroundMasterScript.PatternMapsManager.PatternColorTexture);
+                    var patternColorTexture = BattlegroundMasterScript.PatternMapsManager.PatternColorTexture;
+                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundPatternTexture", patternColorTexture);
+
+                    var displayingMaterial = GetComponent<MeshRenderer>().material;
+                    displayingMaterial.SetTexture("_BackgroundTexture", patternColorTexture);
                 }
                 , update: () =>
                 {

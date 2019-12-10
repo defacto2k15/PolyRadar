@@ -70,7 +70,7 @@
 				bool yNearMargin = uv.y < screenDependentMarginSize.y || uv.y > (1-screenDependentMarginSize.y);// || i.uv.x > maxThreshold.x;
 				float bloomIntensity = 1- min(distanceToMargin.x, distanceToMargin.y);
 
-				float3 baseColor = _Color.xyz * bloomIntensity;
+				float3 baseColor = _Color.xyz * step(0,bloomIntensity);
 
 				float4 finalColor = float4(baseColor, bloomIntensity);
 

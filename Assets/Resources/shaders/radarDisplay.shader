@@ -3,11 +3,14 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "blue" {}
+		_BackgroundTexture("BackgroundTexture", 2D) = "blue"{}
+		_BackgroundTextureIntensityMultiplier("BackgroundTextureIntensityMultiplier",Range(0,2)) = 1
 		_IntensityAdding("IntensityAdding", Range(0,10)) = 0
 		_RadarColor("RadarColor", Vector) = (0.0,1.0,0.0,0.0)
 		_LerpToWhiteFactor("LerpToWhiteFactor", Range(0,3)) = 1.0
-		_IndicatorIntensity("IndicatorIntensity", Range(0,1)) = 0.1
-
+		_IndicatorIntensityMultiplier("IndicatorIntensityMultiplier", Range(0,10)) = 0.1
+		_IndicatorColor("IndicatorColor",Vector)=(0.0,1.0,0.0,1.0)
+		_RadarIntensityMultiplier("RadarIntensityMultiplier", Range(0,5)) = 1
     }
     SubShader
     {
@@ -35,17 +38,20 @@
             };
 
             sampler2D _MainTex;
-            float4 _MainTex_ST;
+			sampler2D _BackgroundTexture;
+			float _BackgroundTextureIntensityMultiplier;
 			float _IntensityAdding;
 			float4 _RadarColor;
 			float _LerpToWhiteFactor;
-			float _IndicatorIntensity;
+			float _IndicatorIntensityMultiplier;
+			float3 _IndicatorColor;
+			float _RadarIntensityMultiplier;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.uv = v.uv;
                 return o;
             }
 
@@ -57,20 +63,24 @@
 
             float4 frag (v2f i) : SV_Target
             {
-				float4 sampledColor = tex2D(_MainTex, i.uv);
-				return sampledColor;
+				float4 sampledBackgroundColor = tex2D(_BackgroundTexture, i.uv);
+				float4 radarSample = tex2D(_MainTex, i.uv);
+				float3 radarColor = radarSample.rgb;
+				float indicatorIntensity = radarSample.a;
 
-				float intensity = max(sampledColor.x, sampledColor.a*_IndicatorIntensity);
-				//return intensity;
-				float3 baseColor = lerp(_RadarColor.rgb, 1, intensity*_LerpToWhiteFactor);
-				
-				float4 col= float4(0,0,0,1);
-				col.rgb = baseColor*intensity;
-				col.rgb *= (1 + _IntensityAdding);
+				float3 backgroundInfluence = sampledBackgroundColor.rgb*sampledBackgroundColor.a* _BackgroundTextureIntensityMultiplier;
+				float3 indicatorInfluence = _IndicatorColor * indicatorIntensity*_IndicatorIntensityMultiplier;
+				float3 radarInfluence = radarColor * _RadarIntensityMultiplier;
+
+				float3 finalColor = indicatorInfluence + radarInfluence + backgroundInfluence;
+				float maxComponent = max(max(finalColor.r, finalColor.g), finalColor.b);
+
+				finalColor = lerp(finalColor, 1, maxComponent*_LerpToWhiteFactor);
+				finalColor *= (1 + _IntensityAdding);
 
 				float distanceToCenter = length(i.uv - 0.5) * 2;
-				col = lerp(0, col, invLerpSaturated(distanceToCenter, 1, 0.95));
-                return col;
+				finalColor = lerp(0, finalColor, invLerpSaturated(distanceToCenter, 1, 0.95));
+				return float4(finalColor,1);
             }
             ENDCG
         }
