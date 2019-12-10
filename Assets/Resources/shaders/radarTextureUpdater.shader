@@ -18,6 +18,9 @@
 		_BattlegroundPatternTexture("_BattlegroundPatternTexture", 2D) = "blue" {}
 
 		_OcclusionEdgesMipmapLevel("_OcclusionEdgesMipmapLevel", Int) = 0
+
+		_BattlegroundColorTexture("BattlegroundColorTexture", 2D) = "blue"{}
+		_BattlegroundDepthTexture("BattlegroundDepthTexture", 2D) = "blue"{}
     }
     SubShader
     {
@@ -62,6 +65,9 @@
 
 			int _OcclusionEdgesMipmapLevel;
 
+			sampler2D _BattlegroundColorTexture;
+			sampler2D _BattlegroundDepthTexture;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -96,6 +102,7 @@
 
 				float annealingIntensity = 1;
 				float3 noiseColor = float3(0, 1, 0);
+					float2 polarUv = float2(r, (phi/(2*PI))+0.5);
 				if (angleDifference < frameAngleDelta) {
 					annealingIntensity = angleDifference / frameAngleDelta;
 					float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
@@ -103,13 +110,19 @@
 					float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
 					radarColor = max(radarColor, max(cartesianNoiseIntensity, radialNoiseIntensity) * noiseColor);
 
-					float2 polarUv = float2(r, (phi/(2*PI))+0.5);
 					float4 patternColor = tex2D(_BattlegroundPatternTexture, i.uv);
 					float occlusionEdge = tex2Dlod(_OcclusionEdges, float4(polarUv, 0, _OcclusionEdgesMipmapLevel)).a;
+					float occlusionHeight = tex2D(_OcclusionHeightMap, polarUv);
 					if (occlusionEdge > 0) {
-						float occlusionHeight = tex2D(_OcclusionHeightMap, i.uv);
 						radarColor = patternColor.rgb*occlusionEdge*(patternColor.a*3);
 					}
+
+					float battlegroundDepth = tex2D(_BattlegroundDepthTexture, i.uv).r;
+					if (battlegroundDepth > occlusionHeight+0.0001) {
+						float4 battlegroundSample = tex2D(_BattlegroundColorTexture, i.uv);
+						radarColor.rgb += battlegroundSample.rgb * battlegroundSample.a;
+					}
+
 				}
 				radarColor= applyAnnealing(radarColor, annealingIntensity);
 
@@ -118,7 +131,7 @@
 					beamIndicatorIntensity = (_BeamIndicatorSize-(abs(angleDifference)*r))/_BeamIndicatorSize;
 				}
 
-				return float4(radarColor,beamIndicatorIntensity);
+				return float4( radarColor,beamIndicatorIntensity);
             }
             ENDCG
         }

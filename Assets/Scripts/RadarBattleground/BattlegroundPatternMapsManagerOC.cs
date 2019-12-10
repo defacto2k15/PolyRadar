@@ -78,7 +78,7 @@ namespace Assets.Scripts.RadarBattleground
                     currentEdgeCarry--;
 
                     masterHeightMapArray.SetPixel(new Vector2Int(x, y), maxHeightInLine);
-                    if (isEdgeDetected)
+                    if (isEdgeDetected )
                     {
                         edgesTexture.SetPixel(x, y, new Color(1, 1, 1, 1));
                     }
@@ -87,6 +87,7 @@ namespace Assets.Scripts.RadarBattleground
                         edgesTexture.SetPixel(x,y, new Color(0,0,0,0));
                     }
                 }
+
             }
             edgesTexture.Apply(true);
 

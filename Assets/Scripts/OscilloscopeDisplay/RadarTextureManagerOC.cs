@@ -48,6 +48,9 @@ namespace Assets.Scripts.OscilloscopeDisplay
                     RadarIndicatorObject.transform.localRotation = Quaternion.Euler(RadarIndicatorObject.transform.localEulerAngles.x, -BeamAngleInDegrees - 90,
                         RadarIndicatorObject.transform.localEulerAngles.z);
                     AddBeamDataToOscilloscope();
+                    var battlegroundTextures = BattlegroundMasterScript.RenderBattleground();
+                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundColorTexture", battlegroundTextures.ColorTexture);
+                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundDepthTexture", battlegroundTextures.DepthTexture);
                     _previousBeamAngleInDegrees = BeamAngleInDegrees;
                 });
         }

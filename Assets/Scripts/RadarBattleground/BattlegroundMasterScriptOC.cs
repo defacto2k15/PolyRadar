@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Scripts.Vehicles;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,6 +14,7 @@ namespace Assets.Scripts.RadarBattleground
         public Vector2Int BattlegroundTargetSize;
         public Camera BattlegroundCamera;
         public StaticBattlegroundPropsRootScriptOC StaticBattlegroundPropsRoot;
+        public BattlegroundVehiclesRootOC VechiclesRootOC;
         public BattlegroundPatternMapsManagerOC PatternMapsManager;
 
         private RenderTexture _battlegroundTargetColorTexture;
@@ -29,10 +31,12 @@ namespace Assets.Scripts.RadarBattleground
                 _battlegroundTargetDepthTexture.depthBuffer);
             BattlegroundCamera.enabled = false;
 
+            VechiclesRootOC.SetVehiclesEnabled(false);
             ForceColorUpdateInAllChildren();
             StaticBattlegroundPropsRoot.EnableBrightMarginMaterial();
             PatternMapsManager.GeneratePatternMaps(RenderBattleground());
             StaticBattlegroundPropsRoot.EnableBlackMaterial();
+            VechiclesRootOC.SetVehiclesEnabled(true);
         }
 
         private void ForceColorUpdateInAllChildren()

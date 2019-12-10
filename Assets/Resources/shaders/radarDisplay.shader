@@ -65,6 +65,7 @@
             {
 				float4 sampledBackgroundColor = tex2D(_BackgroundTexture, i.uv);
 				float4 radarSample = tex2D(_MainTex, i.uv);
+				//return radarSample;
 				float3 radarColor = radarSample.rgb;
 				float indicatorIntensity = radarSample.a;
 
