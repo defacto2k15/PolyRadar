@@ -8,8 +8,6 @@
 		_LerpToWhiteFactor("LerpToWhiteFactor", Range(0,3)) = 1.0
 		_IndicatorIntensity("IndicatorIntensity", Range(0,1)) = 0.1
 
-		_BattlegroundColorTex("_BattlegroundColorTex", 2D) = "blue"{}
-		_BattlegroundDepthTex("_BattlegroundDepthTex", 2D) = "blue"{}
     }
     SubShader
     {
@@ -43,9 +41,6 @@
 			float _LerpToWhiteFactor;
 			float _IndicatorIntensity;
 
-			sampler2D _BattlegroundColorTex;
-			sampler2D _BattlegroundDepthTex;
-
             v2f vert (appdata v)
             {
                 v2f o;
@@ -62,12 +57,10 @@
 
             float4 frag (v2f i) : SV_Target
             {
-				//float4 sampledBattlegroundColor = tex2D(_BattlegroundDepthTex, i.uv);
-				//return sampledBattlegroundColor;
-
 				float4 sampledColor = tex2D(_MainTex, i.uv);
 				return sampledColor;
-				float intensity = max(sampledColor.x, sampledColor.y*_IndicatorIntensity);
+
+				float intensity = max(sampledColor.x, sampledColor.a*_IndicatorIntensity);
 				//return intensity;
 				float3 baseColor = lerp(_RadarColor.rgb, 1, intensity*_LerpToWhiteFactor);
 				

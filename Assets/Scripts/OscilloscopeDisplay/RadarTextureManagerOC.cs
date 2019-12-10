@@ -13,7 +13,6 @@ namespace Assets.Scripts.OscilloscopeDisplay
     {
         public GameObject RadarIndicatorObject;
         public BattlegroundMasterScriptOC BattlegroundMasterScript;
-        public BattlegroundPatternMapsManagerOC BattlegroundPatternMapsManager;
         public OscilloscopeIntensityTextureContainerOC IntensityTextureContainer;
         public Material RadarTextureUpdaterMaterial;
 
@@ -32,12 +31,13 @@ namespace Assets.Scripts.OscilloscopeDisplay
         public void Update()
         {
             WaitingUpdateLoopBox.Update(ref _updateLoopBox
-                , condition: () => BattlegroundPatternMapsManager.BattlegroundOcclusionTextures != null
+                , condition: () => BattlegroundMasterScript.InitializationComplete 
                 , initialization: () =>
                 {
-                    var battlegroundOcclusionTexturesPack = BattlegroundPatternMapsManager.BattlegroundOcclusionTextures;
+                    var battlegroundOcclusionTexturesPack = BattlegroundMasterScript.PatternMapsManager.BattlegroundOcclusionTextures;
                     RadarTextureUpdaterMaterial.SetTexture("_OcclusionHeightMap", battlegroundOcclusionTexturesPack.OcclusionHeightMap);
                     RadarTextureUpdaterMaterial.SetTexture("_OcclusionEdges", battlegroundOcclusionTexturesPack.OcclussionEdges);
+                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundPatternTexture", BattlegroundMasterScript.PatternMapsManager.PatternColorTexture);
                 }
                 , update: () =>
                 {

@@ -21,6 +21,11 @@ namespace Assets.Scripts.RadarBattleground
 
         void Update()
         {
+            UpdateColor();
+        }
+
+        public void UpdateColor()
+        {
             AffirmFieldArePresent();
             _renderer.GetPropertyBlock(_propBlock);
             _propBlock.SetColor("_Color", Color);

@@ -63,8 +63,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MarginSize: 15
-    - _MarginTransitionWidth: 0.65
+    - _MarginSize: 4
+    - _MarginTransitionWidth: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1

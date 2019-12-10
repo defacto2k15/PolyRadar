@@ -10,25 +10,18 @@ namespace Assets.Scripts.RadarBattleground
     public class BattlegroundPatternMapsManagerOC : MonoBehaviour
     {
         public ComputeShader RFloatTransportComputeShader;
-        public BattlegroundMasterScriptOC BattlegroundMasterScript;
-
+        public float EdgeCarryFraction = 0.05f;
+        public float EdgeThreshold = 0.0001f;
         public Vector2Int MasterHeightMapSize;
         private HeightmapRepresentationRelocator _relocator;
 
         private BattlegroundOcclusionTexturesPack _battlegroundOcclusionTexturesPack;
         private RenderTexture _patternColorTexture;
-        private WaitingUpdateLoopBox _updateLoopBox;
 
-        public void Update()
+        public void GeneratePatternMaps(BattlegroundTargetTextures battlegroundTargetTextures)
         {
-            WaitingUpdateLoopBox.Update(ref _updateLoopBox
-            , condition: () => BattlegroundMasterScript.InitializationComplete
-            , initialization: () =>
-            {
-                var battlegroundTargetTextures = BattlegroundMasterScript.RenderBattleground();
-                _battlegroundOcclusionTexturesPack = GenerateOcclusionTextures(battlegroundTargetTextures);
-                _patternColorTexture = CopyOfColorTexture(battlegroundTargetTextures);
-            });
+            _battlegroundOcclusionTexturesPack = GenerateOcclusionTextures(battlegroundTargetTextures);
+            _patternColorTexture = CopyOfColorTexture(battlegroundTargetTextures);
         }
 
         private RenderTexture CopyOfColorTexture(BattlegroundTargetTextures battlegroundTargetTextures)
@@ -53,11 +46,12 @@ namespace Assets.Scripts.RadarBattleground
             var heightMapArray = _relocator.TextureToArray(battlegroundTargetTextures.DepthTexture);
             var masterHeightMapArray = new HeightmapArray(new float[MasterHeightMapSize.x*MasterHeightMapSize.y], MasterHeightMapSize);
 
-            var edgeTreshold = 0.0001f;
+            var edgeCarryInPixels =  Mathf.RoundToInt(EdgeCarryFraction*MasterHeightMapSize.x);
             for (var y = 0; y < MasterHeightMapSize.y; y++)
             {
-                float phi = (y / (float) MasterHeightMapSize.y) * 2 * Mathf.PI;
+                float phi = (y / (float) MasterHeightMapSize.y) * 2 * Mathf.PI - Mathf.PI;
                 float maxHeightInLine = float.MinValue;
+                int currentEdgeCarry = 0;
                 for (var x = 0; x < MasterHeightMapSize.x; x++)
                 {
                     float r = (x / (float) MasterHeightMapSize.x);
@@ -70,12 +64,18 @@ namespace Assets.Scripts.RadarBattleground
                     bool isEdgeDetected = false;
                     if (newHeight > maxHeightInLine)
                     {
-                        if (Mathf.Abs(newHeight - maxHeightInLine) > edgeTreshold)
+                        if (Mathf.Abs(newHeight - maxHeightInLine) > EdgeThreshold)
                         {
                             isEdgeDetected = true;
+                            currentEdgeCarry = edgeCarryInPixels+1;
                         }
                         maxHeightInLine = newHeight;
                     }
+                    if (currentEdgeCarry > 0)
+                    {
+                        isEdgeDetected = true;
+                    }
+                    currentEdgeCarry--;
 
                     masterHeightMapArray.SetPixel(new Vector2Int(x, y), maxHeightInLine);
                     if (isEdgeDetected)
@@ -106,5 +106,7 @@ namespace Assets.Scripts.RadarBattleground
         public BattlegroundOcclusionTexturesPack BattlegroundOcclusionTextures => _battlegroundOcclusionTexturesPack;
 
         public RenderTexture PatternColorTexture => _patternColorTexture;
+
+        public bool InitializationComplete => _battlegroundOcclusionTexturesPack != null;
     }
 }

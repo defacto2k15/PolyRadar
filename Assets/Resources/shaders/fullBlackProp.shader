@@ -1,8 +1,7 @@
-﻿Shader "Custom/BattlegroundStaticProp"
+﻿Shader "Custom/FullBlackProp"
 {
     Properties
     {
-		 [PerRendererData]_Color("_Color", Vector) = (0.0,1.0,0.0,1.0)
     }
     SubShader
     {
@@ -25,20 +24,13 @@
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-				float worldSpaceY : ANY_Y;
             };
-
-            sampler2D _MainTex;
-			float4 _Color;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-				o.worldSpaceY = mul( unity_ObjectToWorld, v.vertex).y;
-				o.uv = v.uv;
                 return o;
             }
 
@@ -50,8 +42,8 @@
             RenderTargets frag (v2f i)
             {
 				RenderTargets target;
-				target.Color =  _Color;
-				target.Depth =  i.worldSpaceY;
+				target.Color = 0;
+				target.Depth = 0;
 				return target;
             }
             ENDCG

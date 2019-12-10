@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BattlegroundPatternTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BeamIntensityTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,10 +80,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AnnealingSpeedMultiplier: 0.9920588
-    - _AnnealingSpeedOffset: -0.0057512
-    - _BeamAngleInDegrees: 164.85205
-    - _BeamAngleInDegreesDelta: 0.623291
+    - _AnnealingSpeedMultiplier: 0.9898533
+    - _AnnealingSpeedOffset: -0.0073566507
+    - _BeamAngleInDegrees: 101.12537
+    - _BeamAngleInDegreesDelta: 1.3094864
     - _BeamIndicatorSize: 0.01
     - _BeamIndicatorSizeInDegrees: 90
     - _BumpScale: 1
@@ -91,6 +95,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _OcclusionEdgesMipmapLevel: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0

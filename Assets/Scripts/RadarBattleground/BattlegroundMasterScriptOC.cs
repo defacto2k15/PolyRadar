@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Assets.Scripts.RadarBattleground
     {
         public Vector2Int BattlegroundTargetSize;
         public Camera BattlegroundCamera;
+        public StaticBattlegroundPropsRootScriptOC StaticBattlegroundPropsRoot;
+        public BattlegroundPatternMapsManagerOC PatternMapsManager;
 
         private RenderTexture _battlegroundTargetColorTexture;
         private RenderTexture _battlegroundTargetDepthTexture;
@@ -25,9 +28,19 @@ namespace Assets.Scripts.RadarBattleground
             BattlegroundCamera.SetTargetBuffers(new[] {_battlegroundTargetColorTexture.colorBuffer, _battlegroundTargetDepthTexture.colorBuffer},
                 _battlegroundTargetDepthTexture.depthBuffer);
             BattlegroundCamera.enabled = false;
+
+            ForceColorUpdateInAllChildren();
+            StaticBattlegroundPropsRoot.EnableBrightMarginMaterial();
+            PatternMapsManager.GeneratePatternMaps(RenderBattleground());
+            StaticBattlegroundPropsRoot.EnableBlackMaterial();
         }
 
-        public bool InitializationComplete => _battlegroundTargetColorTexture != null;
+        private void ForceColorUpdateInAllChildren()
+        {
+            GetComponentsInChildren<MaterialPropertyBlockColorSetterOC>().ToList().ForEach(c=>c.UpdateColor());
+        }
+
+        public bool InitializationComplete => _battlegroundTargetColorTexture != null && PatternMapsManager.InitializationComplete;
 
         public BattlegroundTargetTextures RenderBattleground()
         {

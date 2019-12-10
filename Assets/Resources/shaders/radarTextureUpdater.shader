@@ -16,6 +16,9 @@
 
 		_OcclusionHeightMap("OcclusionHeightMap", 2D) = "blue" {}
 		_OcclusionEdges("_OcclusionEdges", 2D) = "blue" {}
+		_BattlegroundPatternTexture("_BattlegroundPatternTexture", 2D) = "blue" {}
+
+		_OcclusionEdgesMipmapLevel("_OcclusionEdgesMipmapLevel", Int) = 0
     }
     SubShader
     {
@@ -56,6 +59,9 @@
 
 			sampler2D _OcclusionHeightMap;
 			sampler2D _OcclusionEdges;
+			sampler2D _BattlegroundPatternTexture;
+
+			int _OcclusionEdgesMipmapLevel;
 
             v2f vert (appdata v)
             {
@@ -97,8 +103,6 @@
 				float annealingIntensity = 1;
 				if (angleDifference < frameAngleDelta) {
 					annealingIntensity = angleDifference / frameAngleDelta;
-
-
 					float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
 					float2 cartesianCoords = float2(312.123, -521.31234) + toCartesian(float2(r, phi));
 					float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
@@ -116,9 +120,13 @@
 
 				float2 polarUv = float2(r, (phi/(2*PI))+0.5);
 				intensity = tex2D(_OcclusionHeightMap, polarUv);
-				//intensity = tex2D(_OcclusionEdges, polarUv).a;
+				intensity = tex2Dlod(_OcclusionEdges, float4(polarUv, 0, _OcclusionEdgesMipmapLevel)).a;
+				intensity = 1-step(intensity, 0);
 
-				return float4(intensity, beamIndicatorIntensity,0,1);
+				float4 battlegroundStaticBackground = tex2D(_BattlegroundPatternTexture, i.uv);
+				float3 outColor = battlegroundStaticBackground.a;// *intensity;
+
+				return float4(outColor,beamIndicatorIntensity);
             }
             ENDCG
         }
