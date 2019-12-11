@@ -16,5 +16,10 @@ namespace Assets.Scripts.Vehicles
                 child.gameObject.SetActive(isEnabled);
             }
         }
+
+        public void SetMarkersVisible(bool visible)
+        {
+            GetComponentsInChildren<VehicleMarkerOC>().ToList().ForEach(c=>c.SetMarkerVisible(visible));
+        }
     }
 }

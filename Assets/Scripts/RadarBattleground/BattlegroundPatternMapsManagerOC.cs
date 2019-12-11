@@ -88,6 +88,7 @@ namespace Assets.Scripts.RadarBattleground
                     }
                 }
 
+
             }
             edgesTexture.Apply(true);
 

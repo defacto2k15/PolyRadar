@@ -42,6 +42,8 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
                     var displayingMaterial = GetComponent<MeshRenderer>().material;
                     displayingMaterial.SetTexture("_BackgroundTexture", patternColorTexture);
+                    var battlegroundTextures = BattlegroundMasterScript.RenderBattleground();
+                    displayingMaterial.SetTexture("_BattlegroundMarkersTexture", battlegroundTextures.MarkersTexture);
                 }
                 , update: () =>
                 {
@@ -51,6 +53,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
                     var battlegroundTextures = BattlegroundMasterScript.RenderBattleground();
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundColorTexture", battlegroundTextures.ColorTexture);
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundDepthTexture", battlegroundTextures.DepthTexture);
+                    RadarTextureUpdaterMaterial.SetTexture("_BattlegroundMarkersTexture", battlegroundTextures.MarkersTexture);
                     _previousBeamAngleInDegrees = BeamAngleInDegrees;
                 });
         }

@@ -11,6 +11,8 @@
 		_IndicatorIntensityMultiplier("IndicatorIntensityMultiplier", Range(0,10)) = 0.1
 		_IndicatorColor("IndicatorColor",Vector)=(0.0,1.0,0.0,1.0)
 		_RadarIntensityMultiplier("RadarIntensityMultiplier", Range(0,5)) = 1
+		_BattlegroundMarkersTexture("BattlegroundMarkersTexture", 2D) = "blue"{}
+		_MarkersIntensityMultiplier("MarkersIntensityMultiplier", Range(0,5)) = 1
     }
     SubShader
     {
@@ -46,6 +48,8 @@
 			float _IndicatorIntensityMultiplier;
 			float3 _IndicatorColor;
 			float _RadarIntensityMultiplier;
+			sampler2D _BattlegroundMarkersTexture;
+			float _MarkersIntensityMultiplier;
 
             v2f vert (appdata v)
             {
@@ -60,20 +64,21 @@
 				return saturate((val - min) / delta);
 			}
 
-
             float4 frag (v2f i) : SV_Target
             {
 				float4 sampledBackgroundColor = tex2D(_BackgroundTexture, i.uv);
 				float4 radarSample = tex2D(_MainTex, i.uv);
-				//return radarSample;
 				float3 radarColor = radarSample.rgb;
 				float indicatorIntensity = radarSample.a;
+
+				float3 markersColor = tex2D(_BattlegroundMarkersTexture, i.uv).rgb;
 
 				float3 backgroundInfluence = sampledBackgroundColor.rgb*sampledBackgroundColor.a* _BackgroundTextureIntensityMultiplier;
 				float3 indicatorInfluence = _IndicatorColor * indicatorIntensity*_IndicatorIntensityMultiplier;
 				float3 radarInfluence = radarColor * _RadarIntensityMultiplier;
+				float3 markersInfluence = markersColor * _MarkersIntensityMultiplier;
 
-				float3 finalColor = indicatorInfluence + radarInfluence + backgroundInfluence;
+				float3 finalColor = indicatorInfluence + radarInfluence + backgroundInfluence + markersInfluence;
 				float maxComponent = max(max(finalColor.r, finalColor.g), finalColor.b);
 
 				finalColor = lerp(finalColor, 1, maxComponent*_LerpToWhiteFactor);

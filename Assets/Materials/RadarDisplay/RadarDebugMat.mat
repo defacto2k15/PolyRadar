@@ -31,6 +31,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BattlegroundMarkersTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -80,6 +84,7 @@ Material:
     - _IndicatorIntensityMultiplier: 0.8
     - _IntensityAdding: 0
     - _LerpToWhiteFactor: 0.5
+    - _MarkersIntensityMultiplier: 1.3
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
