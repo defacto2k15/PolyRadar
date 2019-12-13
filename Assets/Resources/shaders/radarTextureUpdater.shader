@@ -3,12 +3,10 @@
     Properties
     {
         _MainTex("MainTex", 2D) = "blue" {}
-        _BeamIntensityTexture("BeamIntensityTexture", 2D) = "blue" {}
 		_BeamAngleInDegrees("BeamAngleInDegrees", Range(0,360)) = 0
 		_BeamAngleInDegreesDelta("BeamAngleInDegreesDelta", Range(0,360)) = 0
 		_RadialNoiseMultiplier("RadialNoiseMultiplier", Vector) = (1.0,1.0,1.0,0.0)
 		_CartesianNoiseMultiplier("CartesianNoiseMultiplier", Vector) = (1.0, 1.0, 1.0, 0.0)
-		_BeamIndicatorSize("BeamIndicatorSize",Range(0,1)) = 0.02
 
 		_AnnealingSpeedMultiplier("AnnealingSpeedMultiplier", Range(0,1)) = 0.9
 		_AnnealingSpeedOffset("AnnealingSpeedMultiplier", Range(-1,1)) = -0.01
@@ -49,10 +47,8 @@
             };
 
             sampler2D _MainTex;
-            sampler2D _BeamIntensityTexture;
 			float _BeamAngleInDegrees;
 			float _BeamAngleInDegreesDelta;
-			float _BeamIndicatorSize;
 			float4 _RadialNoiseMultiplier;
 			float4 _CartesianNoiseMultiplier;
 
@@ -114,24 +110,19 @@
 					float occlusionEdge = tex2Dlod(_OcclusionEdges, float4(polarUv, 0, _OcclusionEdgesMipmapLevel)).a;
 					float occlusionHeight = tex2D(_OcclusionHeightMap, polarUv);
 					if (occlusionEdge > 0) {
-						radarColor = patternColor.rgb*occlusionEdge*(patternColor.a*3);
+						radarColor = patternColor.rgb*occlusionEdge;
 					}
 
 					float battlegroundDepth = tex2D(_BattlegroundDepthTexture, i.uv).r;
 					if (battlegroundDepth > occlusionHeight+0.0001) {
 						float4 battlegroundSample = tex2D(_BattlegroundColorTexture, i.uv);
-						radarColor.rgb += battlegroundSample.rgb * battlegroundSample.a;
+						radarColor.rgb += battlegroundSample.rgb;
 					}
-
 				}
+
 				radarColor= applyAnnealing(radarColor, annealingIntensity);
 
-				float beamIndicatorIntensity = 0;
-				if (abs(angleDifference)*r < _BeamIndicatorSize){
-					beamIndicatorIntensity = (_BeamIndicatorSize-(abs(angleDifference)*r))/_BeamIndicatorSize;
-				}
-
-				return float4( radarColor,beamIndicatorIntensity);
+				return float4( radarColor, 1);
             }
             ENDCG
         }

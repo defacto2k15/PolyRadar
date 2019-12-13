@@ -1735,6 +1735,7 @@ MonoBehaviour:
   IntensityTextureContainer: {fileID: 1378668702}
   RadarTextureUpdaterMaterial: {fileID: 2100000, guid: 1df3bff35ccd3ff4abcd7d056984b99c,
     type: 2}
+  MeshRenderer: {fileID: 1378668698}
   BeamAngleInDegrees: 0
   AnnealingMultiplierPerSecond: 0.5
   AnnealingOffsetPerSecond: -0.5

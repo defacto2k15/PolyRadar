@@ -50,8 +50,10 @@ namespace Assets.Scripts.RadarBattleground
         {
             BattlegroundCamera.enabled = true;
             VehiclesRootOC.SetMarkersVisible(false);
+            VehiclesRootOC.SetVehiclesMeshVisible(true);
             RenderPropsView();
             VehiclesRootOC.SetMarkersVisible(true);
+            VehiclesRootOC.SetVehiclesMeshVisible(false);
             RenderMarkersView();
             BattlegroundCamera.enabled =false;
 

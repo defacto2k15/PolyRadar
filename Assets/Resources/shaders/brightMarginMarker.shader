@@ -60,7 +60,7 @@
 
 				float3 baseColor = _Color.xyz * step(0,bloomIntensity);
 
-				float4 finalColor = float4(baseColor, bloomIntensity);
+				float4 finalColor = float4(baseColor, 1);
 
 				return finalColor;
             }

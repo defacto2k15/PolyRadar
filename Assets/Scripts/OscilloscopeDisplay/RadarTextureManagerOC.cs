@@ -15,6 +15,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
         public BattlegroundMasterScriptOC BattlegroundMasterScript;
         public OscilloscopeIntensityTextureContainerOC IntensityTextureContainer;
         public Material RadarTextureUpdaterMaterial;
+        public MeshRenderer MeshRenderer;
 
         [Range(0,360)]
         public float BeamAngleInDegrees;
@@ -40,10 +41,9 @@ namespace Assets.Scripts.OscilloscopeDisplay
                     var patternColorTexture = BattlegroundMasterScript.PatternMapsManager.PatternColorTexture;
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundPatternTexture", patternColorTexture);
 
-                    var displayingMaterial = GetComponent<MeshRenderer>().material;
-                    displayingMaterial.SetTexture("_BackgroundTexture", patternColorTexture);
+                    MeshRenderer.material.SetTexture("_BattlegroundBackgroundTexture", patternColorTexture);
                     var battlegroundTextures = BattlegroundMasterScript.RenderBattleground();
-                    displayingMaterial.SetTexture("_BattlegroundMarkersTexture", battlegroundTextures.MarkersTexture);
+                    MeshRenderer.material.SetTexture("_BattlegroundMarkersTexture", battlegroundTextures.MarkersTexture);
                 }
                 , update: () =>
                 {
@@ -66,6 +66,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
                 angle -= 360f;
             }
 
+            MeshRenderer.material.SetFloat("_BeamAngleInDegrees", angle);
             RadarTextureUpdaterMaterial.SetFloat("_BeamAngleInDegrees", angle);
             RadarTextureUpdaterMaterial.SetFloat("_BeamAngleInDegreesDelta", BeamAngleInDegrees - _previousBeamAngleInDegrees);
 

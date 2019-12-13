@@ -21,5 +21,10 @@ namespace Assets.Scripts.Vehicles
         {
             GetComponentsInChildren<VehicleMarkerOC>().ToList().ForEach(c=>c.SetMarkerVisible(visible));
         }
+
+        public void SetVehiclesMeshVisible(bool visible )
+        {
+            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c=>c.SetVehiclesMeshVisible(visible));
+        }
     }
 }

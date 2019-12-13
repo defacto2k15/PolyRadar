@@ -26,5 +26,10 @@ namespace Assets.Scripts.Vehicles
             var flatPosition = _centerAnchor + MathUtils.PolarToCartesian(new Vector2(FlightRadius, _currentFlightAngle));
             transform.position = new Vector3(flatPosition.x, transform.position.y, flatPosition.y);
         }
+
+        public void SetVehiclesMeshVisible(bool visible)
+        {
+            GetComponent<MeshRenderer>().enabled = visible;
+        }
     }
 }

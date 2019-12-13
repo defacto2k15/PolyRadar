@@ -54,7 +54,7 @@
 				float bloomIntensity = 1-saturate(length(i.uv - 0.5) * 2);
 				float3 baseColor = _Color.xyz * (1-step(bloomIntensity,0));
 
-				float4 finalColor = float4(baseColor, bloomIntensity*_BloomMultiplier);
+				float4 finalColor = float4(baseColor*bloomIntensity*_BloomMultiplier, 1);
 
 				RenderTargets target;
 				target.Color =  finalColor;
