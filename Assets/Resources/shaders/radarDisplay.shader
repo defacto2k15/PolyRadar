@@ -64,21 +64,30 @@
 				return saturate((val - min) / delta);
 			}
 
-            float4 frag (v2f i) : SV_Target
+			struct RenderTargetsWithBloom {
+				float4 colorRT : SV_TARGET0;
+				float bloomIntensity : SV_TARGET1;
+			};
+
+            RenderTargetsWithBloom frag (v2f i) 
             {
-				float4 sampledBackgroundColor = tex2D(_BackgroundTexture, i.uv);
+				float4 backgroundSample = tex2D(_BackgroundTexture, i.uv);
 				float4 radarSample = tex2D(_MainTex, i.uv);
 				float3 radarColor = radarSample.rgb;
 				float indicatorIntensity = radarSample.a;
 
-				float3 markersColor = tex2D(_BattlegroundMarkersTexture, i.uv).rgb;
+				float4 markersSample = tex2D(_BattlegroundMarkersTexture, i.uv);
+				float3 markersColor = markersSample.rgb;
+				float markersIntensity = markersSample.a;
 
-				float3 backgroundInfluence = sampledBackgroundColor.rgb*sampledBackgroundColor.a* _BackgroundTextureIntensityMultiplier;
+				float3 backgroundInfluence = backgroundSample.rgb*backgroundSample.a* _BackgroundTextureIntensityMultiplier;
 				float3 indicatorInfluence = _IndicatorColor * indicatorIntensity*_IndicatorIntensityMultiplier;
 				float3 radarInfluence = radarColor * _RadarIntensityMultiplier;
 				float3 markersInfluence = markersColor * _MarkersIntensityMultiplier;
 
 				float3 finalColor = indicatorInfluence + radarInfluence + backgroundInfluence + markersInfluence;
+				float bloomIntensity = radarSample.a + backgroundSample.a + markersIntensity;
+
 				float maxComponent = max(max(finalColor.r, finalColor.g), finalColor.b);
 
 				finalColor = lerp(finalColor, 1, maxComponent*_LerpToWhiteFactor);
@@ -86,7 +95,11 @@
 
 				float distanceToCenter = length(i.uv - 0.5) * 2;
 				finalColor = lerp(0, finalColor, invLerpSaturated(distanceToCenter, 1, 0.95));
-				return float4(finalColor,1);
+
+				RenderTargetsWithBloom rt;
+				rt.colorRT = float4(finalColor, bloomIntensity+5);
+				rt.bloomIntensity = 1+bloomIntensity;
+				return rt;
             }
             ENDCG
         }

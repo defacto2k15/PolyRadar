@@ -1,9 +1,10 @@
 ﻿Shader "Custom/BloomPostProcessing" {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
-		_Threshold("Threshold", Range(0,10)) = 0.4
+		_Threshold("Threshold", Range(0,100)) = 0.4
 		_SoftThreshold("SoftThreshold", Range(0,1)) = 0.1
 		_BloomIntensity("BloomIntensity", Range(0,10)) = 1
+			_Debug("Debug",Range(0,5)) = 1
 	}
 
 	CGINCLUDE
@@ -15,6 +16,7 @@
 		half _Threshold;
 		half _SoftThreshold;
 		half _BloomIntensity;
+		float _Debug;
 
 		struct VertexData {
 			float4 vertex : POSITION;
@@ -33,27 +35,39 @@
 			return i;
 		}
 
-		half3 Prefilter (half3 c) {
-			half brightness = max(c.r, max(c.g, c.b));
-			half knee = _Threshold * _SoftThreshold;
-			half soft = brightness - _Threshold + knee;
-			soft = clamp(soft, 0, 2 * knee);
-			soft = soft * soft / (4 * knee + 0.00001);
-			half contribution = max(soft, brightness - _Threshold);
-			contribution /= max(brightness, 0.00001);
-			return c * contribution;
+		half4 Prefilter (half4 c) {
+			float k = 0;
+			if (c.a > _Threshold) {
+				k = 1;
+			}
+			return float4(c.rgb, c.a*k);
+			//half brightness = c.a;
+			//half knee = _Threshold * _SoftThreshold;
+			//half soft = brightness - _Threshold + knee;
+			//soft = clamp(soft, 0, 2 * knee);
+			//soft = soft * soft / (4 * knee + 0.00001);
+			//half contribution = max(soft, brightness - _Threshold);
+			//contribution /= max(brightness, 0.00001);
+			//return float4(c.rgb,  contribution);
 		}
 
-		half3 Sample (float2 uv) {
-			return tex2D(_MainTex, uv).rgb;
+		float4 Sample (float2 uv, float bloomIntensityOffset) {
+			float4 s = tex2D(_MainTex, uv);
+			s.a = max(0, s.a + bloomIntensityOffset);
+			return s;
 		}
 
-		half3 SampleBox (float2 uv, float delta) {
+		float4 SampleBox (float2 uv, float delta, float bloomIntensityOffset) {
 			float4 o = _MainTex_TexelSize.xyxy * float2(-delta, delta).xxyy;
-			half3 s =
-				Sample(uv + o.xy) + Sample(uv + o.zy) +
-				Sample(uv + o.xw) + Sample(uv + o.zw);
-			return s * 0.25f;
+
+			float4 samples[4];
+			samples[0] = Sample(uv + o.xy, bloomIntensityOffset);
+			samples[1] = Sample(uv + o.zy, bloomIntensityOffset);
+			samples[2] = Sample(uv + o.xw, bloomIntensityOffset);
+			samples[3] = Sample(uv + o.zw, bloomIntensityOffset);
+			float bloomIntensitySum = samples[0].a + samples[1].a + samples[2].a + samples[3].a;
+			float3 outColor = (samples[0].rgb*samples[0].a + samples[1].rgb*samples[1].a + samples[2].rgb*samples[2].a + samples[3].rgb*samples[3].a) / 4;// (bloomIntensitySum);
+			return float4(pow(outColor,_Debug), pow(bloomIntensitySum,0.25) );
 		}
 	ENDCG
 
@@ -62,56 +76,58 @@
 		ZTest Always
 		ZWrite Off
 
-		Pass {
+		Pass { // Box down prefilter
 			CGPROGRAM
 				#pragma vertex VertexProgram
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
-					return half4(Prefilter(SampleBox(i.uv, 1)),1);
+					return Prefilter(SampleBox(i.uv, 1, -5));
 				}
 			ENDCG
 		}
-		Pass {
+		Pass { // BoxDown
 			CGPROGRAM
 				#pragma vertex VertexProgram
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
-					return half4(SampleBox(i.uv, 1),1);
+					return SampleBox(i.uv, 1, 0);
 				}
 			ENDCG
 		}
-		Pass {
+		Pass { // BoxUp
 			Blend One One
 			CGPROGRAM
 				#pragma vertex VertexProgram
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
-					return half4(SampleBox(i.uv, 0.5),1);
+					return SampleBox(i.uv, 0.5, 0);
 				}
 			ENDCG
 		}
-		Pass { 
+		Pass { // Apply bloom
 			CGPROGRAM
 				#pragma vertex VertexProgram
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
 					half4 c = tex2D(_SourceTex, i.uv);
-					c.rgb += _BloomIntensity*SampleBox(i.uv, 0.5);
+					c.rgb += _BloomIntensity*SampleBox(i.uv, 0.5, 0);
 					return c;
 				}
 			ENDCG
 		}
-		Pass { // 4
+		Pass { // Debug
 			CGPROGRAM
 				#pragma vertex VertexProgram
 				#pragma fragment FragmentProgram
 
 				half4 FragmentProgram (Interpolators i) : SV_Target {
-					return half4(_BloomIntensity*SampleBox(i.uv, 0.5), 1);
+					return Prefilter(SampleBox(i.uv, 1, -5)).a;
+					//return half4(_BloomIntensity*SampleBox(i.uv, 0.5), 1);
+					//return tex2D(_SourceTex,i.uv).a-10;
 				}
 			ENDCG
 		}

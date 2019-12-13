@@ -80,7 +80,7 @@
 				return float2(rAndPhi.x*cos(rAndPhi.y), rAndPhi.x*sin(rAndPhi.y));
 			}
 
-			float3 applyAnnealing(float3 i, float annealingIntensity) {
+			float4 applyAnnealing(float4 i, float annealingIntensity) {
 				return saturate(i* lerp(1,_AnnealingSpeedMultiplier,annealingIntensity) + _AnnealingSpeedOffset*annealingIntensity);
 			}
 
@@ -92,7 +92,7 @@
 				float r = length(centeredUv);
 				float phi = atan2(centeredUv.y , centeredUv.x);
 
-				float3 radarColor =  tex2D(_MainTex, i.uv).rgb;
+				float4 radarSample = tex2D(_MainTex, i.uv);
 				
 				float angleDifference = ( radians(_BeamAngleInDegrees)-phi);
 				if (angleDifference < 0) {
@@ -102,36 +102,36 @@
 
 				float annealingIntensity = 1;
 				float3 noiseColor = float3(0, 1, 0);
-					float2 polarUv = float2(r, (phi/(2*PI))+0.5);
+				float2 polarUv = float2(r, (phi/(2*PI))+0.5);
 				if (angleDifference < frameAngleDelta) {
 					annealingIntensity = angleDifference / frameAngleDelta;
 					float radialNoiseIntensity = cnoise(float2(r*_RadialNoiseMultiplier.x, phi*_RadialNoiseMultiplier.y))*_RadialNoiseMultiplier.z;
 					float2 cartesianCoords = float2(312.123, -521.31234) + toCartesian(float2(r, phi));
 					float cartesianNoiseIntensity = cnoise(float2(cartesianCoords.x*_CartesianNoiseMultiplier.x, cartesianCoords.y*_CartesianNoiseMultiplier.y))* _CartesianNoiseMultiplier.z;
-					radarColor = max(radarColor, max(cartesianNoiseIntensity, radialNoiseIntensity) * noiseColor);
+					radarSample = max(radarSample, max(cartesianNoiseIntensity, radialNoiseIntensity) * float4(noiseColor,1));
 
 					float4 patternColor = tex2D(_BattlegroundPatternTexture, i.uv);
 					float occlusionEdge = tex2Dlod(_OcclusionEdges, float4(polarUv, 0, _OcclusionEdgesMipmapLevel)).a;
 					float occlusionHeight = tex2D(_OcclusionHeightMap, polarUv);
 					if (occlusionEdge > 0) {
-						radarColor = patternColor.rgb*occlusionEdge*(patternColor.a*3);
+						radarSample= float4(patternColor.rgb,1)*occlusionEdge*(patternColor.a*3);
 					}
 
 					float battlegroundDepth = tex2D(_BattlegroundDepthTexture, i.uv).r;
 					if (battlegroundDepth > occlusionHeight+0.0001) {
 						float4 battlegroundSample = tex2D(_BattlegroundColorTexture, i.uv);
-						radarColor.rgb += battlegroundSample.rgb * battlegroundSample.a;
+						radarSample += float4(battlegroundSample.rgb * battlegroundSample.a, battlegroundSample.a);
 					}
 
 				}
-				radarColor= applyAnnealing(radarColor, annealingIntensity);
+				radarSample= applyAnnealing(radarSample, annealingIntensity);
 
 				float beamIndicatorIntensity = 0;
-				if (abs(angleDifference)*r < _BeamIndicatorSize){
-					beamIndicatorIntensity = (_BeamIndicatorSize-(abs(angleDifference)*r))/_BeamIndicatorSize;
-				}
+				//if (abs(angleDifference)*r < _BeamIndicatorSize){
+				//	beamIndicatorIntensity = (_BeamIndicatorSize-(abs(angleDifference)*r))/_BeamIndicatorSize;
+				//}
 
-				return float4( radarColor,beamIndicatorIntensity);
+				return float4(radarSample);
             }
             ENDCG
         }
