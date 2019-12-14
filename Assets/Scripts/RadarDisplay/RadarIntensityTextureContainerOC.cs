@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.OscilloscopeDisplay
 {
-    public class OscilloscopeIntensityTextureContainerOC : MonoBehaviour
+    public class RadarIntensityTextureContainerOC : MonoBehaviour
     {
         public Vector2Int Size;
 

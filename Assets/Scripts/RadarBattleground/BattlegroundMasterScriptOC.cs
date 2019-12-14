@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Scripts.OscilloscopeDisplay;
+using Assets.Scripts.RadarDisplay;
 using Assets.Scripts.Vehicles;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -16,6 +18,7 @@ namespace Assets.Scripts.RadarBattleground
         public StaticBattlegroundPropsRootScriptOC StaticBattlegroundPropsRoot;
         public BattlegroundVehiclesRootOC VehiclesRootOC;
         public BattlegroundPatternMapsManagerOC PatternMapsManager;
+        public RadarMarkersManagerOC MarkersManager;
 
         private RenderTexture _battlegroundTargetColorTexture;
         private RenderTexture _battlegroundTargetDepthTexture;
@@ -34,7 +37,7 @@ namespace Assets.Scripts.RadarBattleground
             VehiclesRootOC.SetVehiclesEnabled(false);
             ForceColorUpdateInAllChildren();
             StaticBattlegroundPropsRoot.EnableBrightMarginMaterial();
-            PatternMapsManager.GeneratePatternMaps(RenderBattleground());
+            PatternMapsManager.GeneratePatternMaps(RenderBattleground(false));
             StaticBattlegroundPropsRoot.EnableBlackMaterial();
             VehiclesRootOC.SetVehiclesEnabled(true);
         }
@@ -46,17 +49,19 @@ namespace Assets.Scripts.RadarBattleground
 
         public bool InitializationComplete => _battlegroundTargetColorTexture != null && PatternMapsManager.InitializationComplete;
 
-        public BattlegroundTargetTextures RenderBattleground()
+        public BattlegroundTargetTextures RenderBattleground(bool renderVehicles=true)
         {
             BattlegroundCamera.enabled = true;
-            VehiclesRootOC.SetMarkersVisible(false);
-            VehiclesRootOC.SetVehiclesMeshVisible(true);
+            //VehiclesRootOC.SetAllMarkersVisibility(false);
+            VehiclesRootOC.SetVehiclesVisible(renderVehicles);
             RenderPropsView();
-            VehiclesRootOC.SetMarkersVisible(true);
-            VehiclesRootOC.SetVehiclesMeshVisible(false);
+
+            VehiclesRootOC.SetVehiclesVisible(false);
+            //VehiclesRootOC.SetAllMarkersVisibility(true);
             RenderMarkersView();
             BattlegroundCamera.enabled =false;
 
+            VehiclesRootOC.SetVehiclesVisible(true);
             return new BattlegroundTargetTextures()
             {
                 ColorTexture = _battlegroundTargetColorTexture,
@@ -77,6 +82,11 @@ namespace Assets.Scripts.RadarBattleground
         {
             BattlegroundCamera.SetTargetBuffers(new[] {_markersTexture.colorBuffer}, _battlegroundTargetDepthTexture.depthBuffer);
             BattlegroundCamera.Render();
+        }
+
+        public void UpdateWithBeamSetting(RadarBeamSetting radarBeamSetting)
+        {
+            MarkersManager.UpdateWithBeamSetting(radarBeamSetting);
         }
     }
 

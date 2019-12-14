@@ -9,7 +9,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 {
     public class RadarIntensityTextureAnnealingOC : MonoBehaviour
     {
-        public OscilloscopeIntensityTextureContainerOC IntensityTextureContainerOc;
+        public RadarIntensityTextureContainerOC IntensityTextureContainerOc;
         public Material AnnealingMaterial;
         [Range(0,1)]
         public float AnnealingMultiplierPerSecond;

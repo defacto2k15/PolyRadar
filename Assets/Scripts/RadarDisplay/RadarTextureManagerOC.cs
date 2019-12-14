@@ -13,7 +13,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
     {
         public GameObject RadarIndicatorObject;
         public BattlegroundMasterScriptOC BattlegroundMasterScript;
-        public OscilloscopeIntensityTextureContainerOC IntensityTextureContainer;
+        public RadarIntensityTextureContainerOC IntensityTextureContainer;
         public Material RadarTextureUpdaterMaterial;
         public MeshRenderer MeshRenderer;
 
@@ -50,11 +50,15 @@ namespace Assets.Scripts.OscilloscopeDisplay
                     RadarIndicatorObject.transform.localRotation = Quaternion.Euler(RadarIndicatorObject.transform.localEulerAngles.x, -BeamAngleInDegrees - 90,
                         RadarIndicatorObject.transform.localEulerAngles.z);
                     AddBeamDataToOscilloscope();
+
+                    BattlegroundMasterScript.UpdateWithBeamSetting(new RadarBeamSetting(_previousBeamAngleInDegrees, BeamAngleInDegrees - _previousBeamAngleInDegrees));
                     var battlegroundTextures = BattlegroundMasterScript.RenderBattleground();
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundColorTexture", battlegroundTextures.ColorTexture);
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundDepthTexture", battlegroundTextures.DepthTexture);
                     RadarTextureUpdaterMaterial.SetTexture("_BattlegroundMarkersTexture", battlegroundTextures.MarkersTexture);
                     _previousBeamAngleInDegrees = BeamAngleInDegrees;
+
+                    MeshRenderer.material.SetTexture("_MainTex", IntensityTextureContainer.ActiveTexture);
                 });
         }
 
@@ -83,6 +87,24 @@ namespace Assets.Scripts.OscilloscopeDisplay
 
             RadarTextureUpdaterMaterial.SetFloat("_AnnealingSpeedMultiplier", perFrameAnnealingSpeedMultiplier);
             RadarTextureUpdaterMaterial.SetFloat("_AnnealingSpeedOffset", perFrameAnnealingSpeedOffset);
+        }
+    }
+
+    public class RadarBeamSetting
+    {
+        private float _beamStart;
+        private float _beamDelta;
+
+        public RadarBeamSetting(float beamStart, float beamDelta)
+        {
+            _beamStart = Mathf.Repeat(beamStart,360);
+            _beamDelta = beamDelta;
+        }
+
+        public bool AngleIsInRange(float angle)
+        {
+            angle = Mathf.Repeat(angle, 360);
+            return _beamStart < angle && (_beamStart+_beamDelta)>= angle;
         }
     }
 }

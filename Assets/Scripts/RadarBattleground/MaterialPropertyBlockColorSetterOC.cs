@@ -11,6 +11,7 @@ namespace Assets.Scripts.RadarBattleground
     public class MaterialPropertyBlockColorSetterOC : MonoBehaviour
     {
         public Color Color;
+        public bool ChangeInChildren=false;
         private MaterialPropertyBlock _propBlock;
         private Renderer _renderer;
 
@@ -30,6 +31,17 @@ namespace Assets.Scripts.RadarBattleground
             _renderer.GetPropertyBlock(_propBlock);
             _propBlock.SetColor("_Color", Color);
             _renderer.SetPropertyBlock(_propBlock);
+            if (ChangeInChildren)
+            {
+                GetComponentsInChildren<MaterialPropertyBlockColorSetterOC>().ToList().ForEach(c =>
+                {
+                    if (c != this)
+                    {
+                        c.Color = Color;
+                        c.UpdateColor();
+                    }
+                });
+            }
         }
 
         private void AffirmFieldArePresent()

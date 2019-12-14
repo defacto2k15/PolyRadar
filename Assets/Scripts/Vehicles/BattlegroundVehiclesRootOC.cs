@@ -9,22 +9,15 @@ namespace Assets.Scripts.Vehicles
 {
     public class BattlegroundVehiclesRootOC : MonoBehaviour
     {
-        public void SetVehiclesEnabled(bool isEnabled)
+        public void SetVehiclesEnabled (bool isEnabled)
         {
-            foreach (Transform child in transform)
-            {
-                child.gameObject.SetActive(isEnabled);
-            }
+            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c => c.enabled = isEnabled);
+        }
+        public void SetVehiclesVisible(bool isVisible)
+        {
+            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c => c.GetComponent<MeshRenderer>().enabled = isVisible);
         }
 
-        public void SetMarkersVisible(bool visible)
-        {
-            GetComponentsInChildren<VehicleMarkerOC>().ToList().ForEach(c=>c.SetMarkerVisible(visible));
-        }
-
-        public void SetVehiclesMeshVisible(bool visible )
-        {
-            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c=>c.SetVehiclesMeshVisible(visible));
-        }
+        public List<DummyFlyingVehicleOC> AllVehicles => GetComponentsInChildren<DummyFlyingVehicleOC>().ToList();
     }
 }
