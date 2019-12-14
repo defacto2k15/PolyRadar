@@ -12,6 +12,7 @@ namespace Assets.Scripts.RadarBattleground
         public ComputeShader RFloatTransportComputeShader;
         public float EdgeCarryFraction = 0.05f;
         public float EdgeThreshold = 0.0001f;
+        public Vector2 BattlegroundWorldSpaceSize;
         public Vector2Int MasterHeightMapSize;
         private HeightmapRepresentationRelocator _relocator;
 
@@ -92,10 +93,14 @@ namespace Assets.Scripts.RadarBattleground
             }
             edgesTexture.Apply(true);
 
+                var flatSize = new Vector2(BattlegroundWorldSpaceSize.x, BattlegroundWorldSpaceSize.y);
+                var rect = new Rect(transform.position.x - flatSize.x/2, transform.position.z-flatSize.y/2, flatSize.x, flatSize.y);
+
             return new BattlegroundOcclusionTexturesPack()
             {
                 OcclusionHeightMap = _relocator.ArrayToTexture(masterHeightMapArray),
-                OcclussionEdges = edgesTexture
+                OcclussionEdges = edgesTexture,
+                OcclusionHeightmapArraySampler = new HeightmapArrayFromWorldSpaceSampler(rect, heightMapArray)
             };
         }
 
@@ -103,6 +108,7 @@ namespace Assets.Scripts.RadarBattleground
         {
             public Texture OcclusionHeightMap;
             public Texture OcclussionEdges;
+            public HeightmapArrayFromWorldSpaceSampler OcclusionHeightmapArraySampler;
         }
 
         public BattlegroundOcclusionTexturesPack BattlegroundOcclusionTextures => _battlegroundOcclusionTexturesPack;
@@ -110,5 +116,23 @@ namespace Assets.Scripts.RadarBattleground
         public RenderTexture PatternColorTexture => _patternColorTexture;
 
         public bool InitializationComplete => _battlegroundOcclusionTexturesPack != null;
+    }
+
+    public class HeightmapArrayFromWorldSpaceSampler
+    {
+        private Rect _worldSpaceMapArea;
+        private HeightmapArray _heightmapArray;
+
+        public HeightmapArrayFromWorldSpaceSampler(Rect worldSpaceMapArea, HeightmapArray heightmapArray)
+        {
+            _worldSpaceMapArea = worldSpaceMapArea;
+            _heightmapArray = heightmapArray;
+        }
+
+        public float Sample(Vector2 worldSpacePosition)
+        {
+            var uv = _worldSpaceMapArea.UvInRect(worldSpacePosition);
+            return _heightmapArray.SampleWithFilterByUv(uv);
+        }
     }
 }

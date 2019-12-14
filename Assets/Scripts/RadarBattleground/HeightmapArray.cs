@@ -14,6 +14,12 @@ namespace Assets.Scripts.RadarBattleground
             _size = size;
         }
 
+
+        public float SampleWithFilterByUv(Vector2 uv)
+        {
+            return SampleWithFilter(new Vector2(uv.x * _size.x, uv.y * _size.y));
+        }
+
         public float SampleWithFilter(Vector2 query)
         {
             var lower = query.FloorToInt();

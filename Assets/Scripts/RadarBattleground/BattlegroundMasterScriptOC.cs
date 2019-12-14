@@ -52,12 +52,12 @@ namespace Assets.Scripts.RadarBattleground
         public BattlegroundTargetTextures RenderBattleground(bool renderVehicles=true)
         {
             BattlegroundCamera.enabled = true;
-            //VehiclesRootOC.SetAllMarkersVisibility(false);
+            MarkersManager.SetAllMarkersVisibility(false);
             VehiclesRootOC.SetVehiclesVisible(renderVehicles);
             RenderPropsView();
 
             VehiclesRootOC.SetVehiclesVisible(false);
-            //VehiclesRootOC.SetAllMarkersVisibility(true);
+            MarkersManager.SetAllMarkersVisibility(true);
             RenderMarkersView();
             BattlegroundCamera.enabled =false;
 
@@ -86,7 +86,7 @@ namespace Assets.Scripts.RadarBattleground
 
         public void UpdateWithBeamSetting(RadarBeamSetting radarBeamSetting)
         {
-            MarkersManager.UpdateWithBeamSetting(radarBeamSetting);
+            MarkersManager.UpdateWithBeamSetting(radarBeamSetting, PatternMapsManager.BattlegroundOcclusionTextures.OcclusionHeightmapArraySampler);
         }
     }
 

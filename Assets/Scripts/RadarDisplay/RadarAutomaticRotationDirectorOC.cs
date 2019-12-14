@@ -9,7 +9,7 @@ namespace Assets.Scripts.OscilloscopeDisplay
 {
     public class RadarAutomaticRotationDirectorOC : MonoBehaviour
     {
-        [Range(0,360)]
+        [Range(0,2000)]
         public float RotationSpeedInDegreesPerSecond;
         public RadarTextureManagerOC TextureManager;
 
