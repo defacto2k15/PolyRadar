@@ -1,0 +1,43 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSTextureToBuffer
+#pragma kernel CSBufferToTexture
+
+cbuffer ConstantGlobalParameters {
+	int g_InputTextureWidth;
+	int g_InputTextureHeight;
+};
+
+Texture2D<float> _InputTexture;
+RWTexture2D<float> _OutputTexture;
+Buffer<float> _InputBuffer;
+RWBuffer<float> _OutputBuffer;
+
+[numthreads(32,1,1)]
+void CSTextureToBuffer(uint3 id : SV_DispatchThreadID)
+{
+	int index = id.x;
+	int2 coords;
+	coords.y = floor(index / (float)g_InputTextureWidth);
+	coords.x = index - coords.y*g_InputTextureHeight;
+
+	if (coords.x >= g_InputTextureWidth || coords.y >= g_InputTextureHeight) {
+		return;
+	}
+
+	_OutputBuffer[index] = _InputTexture[coords]; 
+}
+
+[numthreads(32,1,1)]
+void CSBufferToTexture(uint3 id : SV_DispatchThreadID)
+{
+	int index = id.x;
+	int2 coords;
+	coords.y = floor(index / (float)g_InputTextureWidth);
+	coords.x = index - coords.y*g_InputTextureHeight;
+
+	if (coords.x >= g_InputTextureWidth || coords.y >= g_InputTextureHeight) {
+		return;
+	}
+
+	_OutputTexture[coords] = _InputBuffer[index];
+}

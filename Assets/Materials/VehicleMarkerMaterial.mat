@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BloomPostProcessingMaterial
-  m_Shader: {fileID: 4800000, guid: 7540d84ed288e9d48bc90d03fea41c5d, type: 3}
+  m_Name: VehicleMarkerMaterial
+  m_Shader: {fileID: 4800000, guid: d91cff6a05374b8489f603873ad11bec, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaTexture:
+        m_Texture: {fileID: 2800000, guid: 013b4124d22b53548a7673c7fa90624e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -56,8 +60,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BloomIntensity: 4.7
+    - _AlphaPowerFactor: 11
+    - _BloomMultiplier: 9.9
     - _BumpScale: 1
+    - _ColorMultiplier: 37
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -69,10 +75,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
-    - _SoftThreshold: 0.18
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Threshold: 0.7
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

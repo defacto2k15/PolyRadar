@@ -19,4 +19,13 @@ namespace Assets.Scripts
             return new Vector2(pos.magnitude, Mathf.Atan2(pos.y, pos.x));
         }
     }
+
+    public static class RectUtils
+    {
+        public static Vector2 UvInRect(this Rect rect, Vector2 pos)
+        {
+            var delta = pos - rect.min;
+            return new Vector2(delta.x / rect.width, delta.y/rect.height);
+        }
+    }
 }
