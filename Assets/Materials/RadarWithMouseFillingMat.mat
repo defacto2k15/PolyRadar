@@ -76,4 +76,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MouseUvPosition: {r: 0.60939795, g: 0.7232376, b: 0, a: 0}
+    - _MouseUvPosition: {r: 0.7488856, g: -0.22427441, b: 0, a: 0}

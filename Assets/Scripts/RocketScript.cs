@@ -6,21 +6,32 @@ public class RocketScript : MonoBehaviour
 {
     public float speed = 0.01f;
     public float rotationSpeed = 0.5f;
-    public GameObject rocket;
+    public GameObject rocketSpawner;
+    public int startDirectionX, startDirectionY, startPositionZ;
+    GameObject rocket = null;
     Vector3 velocity;
     Vector3 _Z, _Y, _X, _0;
-    // Start is called before the first frame update
+    
+
+
     void Start()
     {
         _Z = new Vector3(0, 0, 1);
         _X = new Vector3(1, 0, 0);
         _Y = new Vector3(0, 1, 0);
         _0 = new Vector3(0, 0, 0);
-        velocity = _Y;
+        if (startDirectionX == 0 && startDirectionY == 0) velocity = _Y;
+        else
+        {
+            velocity = new Vector3(startDirectionX, startDirectionY, 0);
+            velocity.Normalize();
+        }
         velocity *= speed;
     }
 
-    // Update is called once per frame
+    
+
+
     void Update()
     {
         if (rocket != null)
@@ -51,13 +62,21 @@ public class RocketScript : MonoBehaviour
                 rocket = null;
             }
         }
+
         if (rocket == null)
         {
             if (Input.GetKey("space"))
             {
                 rocket = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                rocket.transform.position = _0;
-                velocity = _Y * speed;
+                rocket.name = "Rocket";
+                rocket.transform.position = rocketSpawner.transform.position + new Vector3(0,0,-rocketSpawner.transform.position.z + startPositionZ);
+                if (startDirectionX == 0 && startDirectionY == 0) velocity = _Y;
+                else
+                {
+                    velocity = new Vector3(startDirectionX, startDirectionY, 0);
+                    velocity.Normalize();
+                }
+                velocity *= speed;
             }
         }
     }

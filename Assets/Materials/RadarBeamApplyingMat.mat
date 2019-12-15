@@ -60,8 +60,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BeamAngleInDegrees: -129.15942
-    - _BeamAngleInDegreesDelta: 0.6047363
+    - _BeamAngleInDegrees: 115.8457
+    - _BeamAngleInDegreesDelta: 0.7753906
     - _BeamIndicatorSize: 0.01
     - _BeamIndicatorSizeInDegrees: 90
     - _BumpScale: 1
@@ -79,7 +79,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UpdateAngleDistanceInDegrees: 7.5311995
+    - _UpdateAngleDistanceInDegrees: 8.308368
     - _ZWrite: 1
     m_Colors:
     - _CartesianNoiseMultiplier: {r: 10, g: 10, b: 0.1, a: 0}
