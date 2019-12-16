@@ -11,13 +11,13 @@ namespace Assets.Scripts.Vehicles
     {
         public void SetVehiclesEnabled (bool isEnabled)
         {
-            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c => c.enabled = isEnabled);
+            GetComponentsInChildren<VehicleOC>().ToList().ForEach(c => c.enabled = isEnabled);
         }
         public void SetVehiclesVisible(bool isVisible)
         {
-            GetComponentsInChildren<DummyFlyingVehicleOC>().ToList().ForEach(c => c.GetComponent<MeshRenderer>().enabled = isVisible);
+            GetComponentsInChildren<VehicleOC>().ToList().ForEach(c => c.GetComponent<MeshRenderer>().enabled = isVisible);
         }
 
-        public List<DummyFlyingVehicleOC> AllVehicles => GetComponentsInChildren<DummyFlyingVehicleOC>().ToList();
+        public List<VehicleOC> AllVehicles => GetComponentsInChildren<VehicleOC>().ToList();
     }
 }

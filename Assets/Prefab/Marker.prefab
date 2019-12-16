@@ -141,6 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectionTail: {fileID: 73338202016095896}
   DefaultColor: {r: 0, g: 0.23529413, b: 1, a: 0}
+  FriendColor: {r: 1, g: 0.8874891, b: 0, a: 0}
+  FoeColor: {r: 1, g: 0, b: 0, a: 0}
   SelectedColor: {r: 1, g: 0, b: 0.93984413, a: 0}
 --- !u!1 &6715152719496882173
 GameObject:

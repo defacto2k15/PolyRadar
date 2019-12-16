@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.RadarBattleground;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Vehicles
 {
@@ -12,8 +13,11 @@ namespace Assets.Scripts.Vehicles
     {
         public GameObject DirectionTail;
         public Color DefaultColor;
+        public Color FriendColor;
+        public Color FoeColor;
         public Color SelectedColor;
         private bool _isSelected;
+        private VehicleAffinity _affinity = VehicleAffinity.Unknown;
 
         public void SetMarkerVisible(bool visible)
         {
@@ -31,19 +35,50 @@ namespace Assets.Scripts.Vehicles
             get { return _isSelected; }
             set
             {
+                Assert.IsTrue(_affinity == VehicleAffinity.Unknown);
                 _isSelected = value;
-                var colorSetter = GetComponent<MaterialPropertyBlockColorSetterOC>();
-                if (_isSelected)
+                UpdateColor();
+            }
+        }
+
+        public bool CanBeSelected => _affinity == VehicleAffinity.Unknown;
+
+        public VehicleAffinity Affinity
+        {
+            get { return _affinity; }
+            set
+            {
+                _affinity = value;
+                _isSelected = false;
+                UpdateColor();
+            }
+        }
+
+        private void UpdateColor()
+        {
+            var colorSetter = GetComponent<MaterialPropertyBlockColorSetterOC>();
+            if (_isSelected)
+            {
+                colorSetter.Color = SelectedColor;
+            }
+            else
+            {
+                if (_affinity == VehicleAffinity.Foe)
                 {
-                    colorSetter.Color = SelectedColor;
+                    colorSetter.Color = FoeColor;
+                }
+                else if (_affinity == VehicleAffinity.Friend)
+                {
+                    colorSetter.Color = FriendColor;
                 }
                 else
                 {
+
                     colorSetter.Color = DefaultColor;
                 }
-
-                colorSetter.UpdateColor();
             }
+
+            colorSetter.UpdateColor();
         }
     }
 }
