@@ -3,24 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Scripts.OscilloscopeDisplay;
 using Assets.Scripts.RadarBattleground;
+using Assets.Scripts.Visibility;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Vehicles
 {
     public class VehicleOC : MonoBehaviour
     {
-        public Color FriendRadarColor;
-        public Color FoeRadarColor;
-        public Color UnknownRadarColor;
+        public VehicleAffinityColorChangerOC ColorChanger;
+        public VehicleMovementTrackerOC MovementTracker;
+        public VehicleVisibilityOC Visibility;
+        public VehicleMarkerOC Marker;
 
-        private Vector2 _lastFlatPosition;
+        private bool _isSelected;
         private VehicleAffinity _affinity;
 
         void Start()
         {
             Affinity = VehicleAffinity.Unknown;
+        }
 
+        public void MyUpdate(Vector2 flatCenter, RadarBeamSetting beamSetting, HeightmapArrayFromWorldSpaceSampler occlusionHeightmapArraySampler)
+        {
+            Marker.MyUpdate(flatCenter, Visibility.transform.position, MovementTracker.MovementDirection, beamSetting, occlusionHeightmapArraySampler);
+        }
+
+        void Update()
+        {
+            if (!Marker.CanBeVisible)
+            {
+                IsSelected = false;
+            }
         }
 
         public VehicleAffinity Affinity
@@ -28,35 +44,33 @@ namespace Assets.Scripts.Vehicles
             get => _affinity;
             set
             {
+                Assert.IsTrue(_affinity == VehicleAffinity.Unknown);
+                IsSelected = false;
                 _affinity = value;
-                UpdateColor();
+                ColorChanger.UpdateColorByAffinity(value);
+                Marker.UpdateColor(_isSelected, _affinity);
             }
         }
 
-        private void UpdateColor()
+        public void SetVisible(bool isVisible)
         {
-            var colorChangeComponent = GetComponent<MaterialPropertyBlockColorSetterOC>();
-            Color color= Color.magenta;
-            if (_affinity == VehicleAffinity.Unknown)
+            Visibility.SetVisibility(isVisible);
+        }
+        public bool IsSelected  
+        {
+            get { return _isSelected; }
+            set
             {
-                color = UnknownRadarColor;
-            }else if (_affinity == VehicleAffinity.Friend)
-            {
-                color = FriendRadarColor;
-            }else if  (_affinity == VehicleAffinity.Foe)
-            {
-                color = FoeRadarColor;
+                _isSelected = value;
+                Marker.UpdateColor(_isSelected, _affinity);
             }
-
-            colorChangeComponent.Color = color;
-            colorChangeComponent.UpdateColor();
         }
 
-        void Update()
+        public bool CanBeSelected => _affinity == VehicleAffinity.Unknown && Marker.CanBeVisible;
+
+        public void ApplyMarkerVisiblityPack(VisibilityChangePack pack)
         {
-            _lastFlatPosition = new Vector2(transform.position.x, transform.position.z);
+            Marker.ApplyMarkerVisiblityPack(pack);
         }
-
-        public Vector2 MovementDirection => (new Vector2(transform.position.x, transform.position.z) - _lastFlatPosition).normalized;
     }
 }

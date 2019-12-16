@@ -15,7 +15,6 @@ namespace Assets.Scripts
 
         public void Update()
         {
-            var markerPairs = MarkersManager.VehicleMarkerPairs;
             int selectedMarkerIndex = 0;
 
             int selectedMarkerOffset = 0;
@@ -28,12 +27,12 @@ namespace Assets.Scripts
                 selectedMarkerOffset=-1;
             }
 
-            if (MarkersManager.HasSelectableMarker && selectedMarkerOffset!= 0)
+            if (MarkersManager.HasSelectableVehicle && selectedMarkerOffset!= 0)
             {
-                MarkersManager.ChangeMarkerSelection(selectedMarkerOffset);
+                MarkersManager.ChangeVehicleSelection(selectedMarkerOffset);
             }
 
-            if (MarkersManager.HasSelectedMarker)
+            if (MarkersManager.HasSelectedVehicle)
             {
                 VehicleAffinity affinity = VehicleAffinity.Unknown;
                 if (Input.GetKeyDown(KeyCode.Q))

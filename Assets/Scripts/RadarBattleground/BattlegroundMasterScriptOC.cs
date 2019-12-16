@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Assets.Scripts.OscilloscopeDisplay;
 using Assets.Scripts.RadarDisplay;
 using Assets.Scripts.Vehicles;
+using Assets.Scripts.Visibility;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -52,12 +53,12 @@ namespace Assets.Scripts.RadarBattleground
         public BattlegroundTargetTextures RenderBattleground(bool renderVehicles=true)
         {
             BattlegroundCamera.enabled = true;
-            MarkersManager.SetAllMarkersVisibility(false);
+            MarkersManager.ApplyVisibilityPackToAllMarkers(new VisibilityChangePack(){ChangingObject = this, Visibility = false});
             VehiclesRootOC.SetVehiclesVisible(renderVehicles);
             RenderPropsView();
 
             VehiclesRootOC.SetVehiclesVisible(false);
-            MarkersManager.SetAllMarkersVisibility(true);
+            MarkersManager.ApplyVisibilityPackToAllMarkers(new VisibilityChangePack(){ChangingObject = this, Visibility = true});
             RenderMarkersView();
             BattlegroundCamera.enabled =false;
 
@@ -86,7 +87,7 @@ namespace Assets.Scripts.RadarBattleground
 
         public void UpdateWithBeamSetting(RadarBeamSetting radarBeamSetting)
         {
-            MarkersManager.UpdateWithBeamSetting(radarBeamSetting, PatternMapsManager.BattlegroundOcclusionTextures.OcclusionHeightmapArraySampler);
+            VehiclesRootOC.UpdateWithBeamSetting(radarBeamSetting, PatternMapsManager.BattlegroundOcclusionTextures.OcclusionHeightmapArraySampler);
         }
     }
 

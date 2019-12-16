@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DirectionTail: {fileID: 73338202016095896}
+  DurationToDisappearMarker: 3
   DefaultColor: {r: 0, g: 0.23529413, b: 1, a: 0}
   FriendColor: {r: 1, g: 0.8874891, b: 0, a: 0}
   FoeColor: {r: 1, g: 0, b: 0, a: 0}
