@@ -19,7 +19,7 @@ namespace Assets.Scripts.Rocket
             if (rocket1 != null)
             {
                 Vector3 newPosition;
-                var z = Vector3.forward;
+                var z = Vector3.up;
                 if (Input.GetKey("left"))
                 {
                     velocity = Quaternion.AngleAxis(rotationSpeed, z) * velocity;

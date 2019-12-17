@@ -72,5 +72,11 @@ namespace Assets.Scripts.Vehicles
         {
             Marker.ApplyMarkerVisiblityPack(pack);
         }
+
+        public void WasHit()
+        {
+            Debug.Log("Plane of affinity "+Affinity+" was destroyed");
+            Destroy(this.gameObject);
+        }
     }
 }

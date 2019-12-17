@@ -1,14 +1,21 @@
-﻿Shader "Custom/BrightEdgeProp"
+﻿Shader "Custom/RocketMarker"
 {
     Properties
     {
+		_AlphaTexture("AlphaTexture",2D) = "blue" {}
 		 [PerRendererData]_Color("_Color", Vector) = (0.0,1.0,0.0,1.0)
-		 _MarginSize("MarginSize", Range(0,15)) = 0.05
+		 _ColorMultiplier("_ColorMultiplier",Range(0,100)) = 1.0
+		_AlphaPowerFactor("AlphaPowerFactor",Range(0,20)) = 1.0
+		_BlinkingIntensityRange("BlinkingIntensityRange", Vector) = (0.5, 1.5, 0.0, 0.0)
+		_BlinkingFrequency("BlinkingFrequency", Range(0,10)) = 1.0
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {"Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
+
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -32,7 +39,11 @@
             };
 
 			float4 _Color;
-			float _MarginSize;
+			float _ColorMultiplier;
+			sampler2D _AlphaTexture;
+			float _AlphaPowerFactor;
+			float4 _BlinkingIntensityRange;
+			float _BlinkingFrequency;
 
             v2f vert (appdata v)
             {
@@ -43,35 +54,24 @@
                 return o;
             }
 
+			float invLerp(float i, float2 range) {
+				return (i - range.x) / (range.y - range.x);
+			}
+
 			struct RenderTargets {
 				float4 Color : SV_TARGET0;
 				float Depth : SV_TARGET1;
 			};
 
-			float deriv(float i) {
-				return max(abs(ddx(i)), abs(ddy(i)));
-			}
-
-			float invLerp(float i, float2 range) {
-				return (i - range.x) / (range.y - range.x);
-			}
-
             RenderTargets frag (v2f i)
             {
-				float2 uv = i.uv;
-				float2 screenDependentMarginSize = float2(_MarginSize * deriv(uv.x), _MarginSize * deriv(uv.y));
+				float  alpha = tex2D(_AlphaTexture, i.uv).a;
+				alpha = pow(alpha, _AlphaPowerFactor);
+				float3 baseColor = _Color.xyz *alpha*_ColorMultiplier;
 
-				float2 distanceToMargin = float2(
-					min( uv.x, 1-uv.x ) / screenDependentMarginSize.x,
-					min( uv.y, 1-uv.y ) / screenDependentMarginSize.y);
+				float blinkingIntensity = lerp(_BlinkingIntensityRange.x, _BlinkingIntensityRange.y, (sin(_Time[2] * _BlinkingFrequency) + 1)*0.5);
 
-				bool xNearMargin = uv.x < screenDependentMarginSize.x || uv.x > (1-screenDependentMarginSize.x);// || i.uv.x > maxThreshold.x;
-				bool yNearMargin = uv.y < screenDependentMarginSize.y || uv.y > (1-screenDependentMarginSize.y);// || i.uv.x > maxThreshold.x;
-				float bloomIntensity = 1- min(distanceToMargin.x, distanceToMargin.y);
-
-				float3 baseColor = _Color.xyz * step(0,bloomIntensity);
-
-				float4 finalColor = float4(baseColor, 1);
+				float4 finalColor = float4(baseColor.xyz *= blinkingIntensity, alpha);
 
 				RenderTargets target;
 				target.Color =  finalColor;

@@ -19,7 +19,7 @@ namespace Assets.Scripts.RadarBattleground
         public StaticBattlegroundPropsRootScriptOC StaticBattlegroundPropsRoot;
         public BattlegroundVehiclesRootOC VehiclesRootOC;
         public BattlegroundPatternMapsManagerOC PatternMapsManager;
-        public RadarMarkersManagerOC MarkersManager;
+        public VehiclesSelectingManagerOC MarkersManager;
 
         private RenderTexture _battlegroundTargetColorTexture;
         private RenderTexture _battlegroundTargetDepthTexture;

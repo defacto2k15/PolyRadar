@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.RadarDisplay
 {
-    public class RadarMarkersManagerOC : MonoBehaviour
+    public class VehiclesSelectingManagerOC : MonoBehaviour
     {
         public BattlegroundVehiclesRootOC VehiclesRoot;
 

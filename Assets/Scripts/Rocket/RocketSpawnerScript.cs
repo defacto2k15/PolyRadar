@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RocketSpawnerScript : MonoBehaviour
 {
+    public bool EnableDebugRocketSpawn = true;
     public GameObject RocketPrefab;
     public int startDirectionX, startDirectionY, startPositionZ;
     GameObject rocket = null;
@@ -12,30 +13,35 @@ public class RocketSpawnerScript : MonoBehaviour
     
     void Start()
     {
-        if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.up;
+        if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.forward;
         else
         {
-            velocity = new Vector3(startDirectionX, startDirectionY, 0);
+            velocity = new Vector3(startDirectionX, 0, startDirectionY);
             velocity.Normalize();
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if(EnableDebugRocketSpawn && Input.GetKeyDown("space"))
         {
-            rocket = Instantiate(RocketPrefab);
-            rocket.transform.SetParent(transform);
-            rocket.name = "Rocket";
-            rocket.transform.position = transform.position + new Vector3(0, 0, -transform.position.z + startPositionZ);
-            if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.up;
-            else
-            {
-                velocity = new Vector3(startDirectionX, startDirectionY, 0);
-                velocity.Normalize();
-            }
-
-            rocket.GetComponent<RocketScript>().SetVelocity(velocity);
+            SpawnRocket();
         }
+    }
+
+    public void SpawnRocket()
+    {
+        rocket = Instantiate(RocketPrefab);
+        rocket.transform.SetParent(transform);
+        rocket.name = "Rocket";
+        rocket.transform.position = transform.position + new Vector3(0, startPositionZ, 0);
+        if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.forward;
+        else
+        {
+            velocity = new Vector3(startDirectionX, 0, startDirectionY);
+            velocity.Normalize();
+        }
+
+        rocket.GetComponent<RocketScript>().SetVelocity(velocity);
     }
 }
