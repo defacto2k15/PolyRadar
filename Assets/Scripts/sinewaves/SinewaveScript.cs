@@ -50,4 +50,14 @@ public class SinewaveScript : MonoBehaviour
             dot.localPosition = newPosition;
         }
     }
+
+    public void setDotColor(int i, Color c)
+    {
+        _dots[i].GetComponent<Renderer>().material.color = c;
+    }
+
+    public Vector3 getDotPosition(int i)
+    {
+        return _dots[i].transform.position;
+    }
 }
