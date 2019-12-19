@@ -60,4 +60,18 @@ public class SinewaveScript : MonoBehaviour
     {
         return _dots[i].transform.position;
     }
+
+    public void sliderHandlerAmplitude(float f)
+    {
+        amplitude = f;
+    }
+
+    public void sliderHandlerScale(float f)
+    {
+        scale = 0.1f * f;
+    }
+    public void sliderHandlerPhase (float f)
+    {
+        phase = 1 - f;
+    }
 }
