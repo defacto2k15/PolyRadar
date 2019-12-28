@@ -12,7 +12,7 @@ namespace Assets.Scripts
 {
     public class RadarModeControllerOC : MonoBehaviour
     {
-        public VehiclesSelectingManagerOC MarkersManager;
+        public VehiclesSelectingManagerOC VehicleSelectionManager;
         public RocketSpawnerScript RocketSpawner;
         private RadarModeCondition _condition = RadarModeCondition.SearchingTarget;
 
@@ -30,12 +30,12 @@ namespace Assets.Scripts
                     selectedMarkerOffset = -1;
                 }
 
-                if (MarkersManager.HasSelectableVehicle && selectedMarkerOffset != 0)
+                if (VehicleSelectionManager.HasSelectableVehicle && selectedMarkerOffset != 0)
                 {
-                    MarkersManager.ChangeVehicleSelection(selectedMarkerOffset);
+                    VehicleSelectionManager.ChangeVehicleSelection(selectedMarkerOffset);
                 }
 
-                if (MarkersManager.HasSelectedVehicle)
+                if (VehicleSelectionManager.HasSelectedVehicle)
                 {
                     VehicleAffinity affinity = VehicleAffinity.Unknown;
                     if (Input.GetKeyDown(KeyCode.Q))
@@ -49,7 +49,7 @@ namespace Assets.Scripts
 
                     if (affinity != VehicleAffinity.Unknown)
                     {
-                        MarkersManager.SetVehicleAffinity(MarkersManager.SelectedVehicle, affinity);
+                        VehicleSelectionManager.SetVehicleAffinity(VehicleSelectionManager.SelectedVehicle, affinity);
                     }
                 }
 

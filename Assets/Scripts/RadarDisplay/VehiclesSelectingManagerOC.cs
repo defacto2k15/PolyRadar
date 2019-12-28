@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Assets.Scripts.OscilloscopeDisplay;
 using Assets.Scripts.RadarBattleground;
 using Assets.Scripts.Vehicles;
-using Assets.Scripts.Visibility;
 using UnityEngine;
 
 namespace Assets.Scripts.RadarDisplay
@@ -14,11 +13,6 @@ namespace Assets.Scripts.RadarDisplay
     public class VehiclesSelectingManagerOC : MonoBehaviour
     {
         public BattlegroundVehiclesRootOC VehiclesRoot;
-
-        public void ApplyVisibilityPackToAllMarkers(VisibilityChangePack pack)
-        {
-            Vehicles.ForEach(c=>c.ApplyMarkerVisiblityPack(pack));
-        }
 
         public bool HasSelectableVehicle => Vehicles.Any(c=>c.CanBeSelected);
         public bool HasSelectedVehicle => Vehicles.Any(c => c.IsSelected);
@@ -49,7 +43,6 @@ namespace Assets.Scripts.RadarDisplay
         }
 
         private List<VehicleOC> Vehicles => VehiclesRoot.AllVehicles;
-
     }
 
     public class VehicleWithMarkerPair

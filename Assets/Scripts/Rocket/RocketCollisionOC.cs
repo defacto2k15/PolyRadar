@@ -16,5 +16,13 @@ namespace Assets.Scripts.Rocket
                 GameObject.Destroy(this.gameObject);
             }
         }
+
+        void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag(Tags.BattlegroundTag))
+            {
+                GameObject.Destroy(this.gameObject);
+            }
+        }
     }
 }

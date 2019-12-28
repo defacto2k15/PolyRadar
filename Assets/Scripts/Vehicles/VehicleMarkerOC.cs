@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.OscilloscopeDisplay;
@@ -11,7 +10,7 @@ using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Vehicles
 {
-    public class VehicleMarkerOC : MonoBehaviour
+    public class VehicleMarkerOC : MarkerOC
     {
         public GameObject DirectionTail;
         public float DurationToDisappearMarker;
@@ -20,15 +19,8 @@ namespace Assets.Scripts.Vehicles
         public Color FoeColor;
         public Color SelectedColor;
 
-        private VisibilityDecider _visibilityDecider = new VisibilityDecider();
         private float _lastPingTime;
 
-        public bool ApplyMarkerVisiblityPack(VisibilityChangePack pack)
-        {
-            var isVisible = _visibilityDecider.ApplyVisibilityChangePack(pack);
-            GetComponentsInChildren<MeshRenderer>().ToList().ForEach(c => c.enabled = isVisible);
-            return isVisible;
-        }
 
         private void UpdateDirection(Vector2 movementDelta)
         {
@@ -55,7 +47,6 @@ namespace Assets.Scripts.Vehicles
             }
         }
 
-        public bool CanBeVisible => _visibilityDecider.FromPackOf(this);
 
         private static bool VehicleIsInBeam(RadarBeamSetting beamSetting, Vector3 vehiclePosition, Vector2 flatCenter)
         {

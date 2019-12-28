@@ -7,41 +7,44 @@ public class RocketSpawnerScript : MonoBehaviour
 {
     public bool EnableDebugRocketSpawn = true;
     public GameObject RocketPrefab;
-    public int startDirectionX, startDirectionY, startPositionZ;
+    public GameObject RocketStartMarker;
+    public float RocketStartAngle;
     GameObject rocket = null;
-    Vector3 velocity;
-    
-    void Start()
-    {
-        if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.forward;
-        else
-        {
-            velocity = new Vector3(startDirectionX, 0, startDirectionY);
-            velocity.Normalize();
-        }
-    }
 
     void Update()
     {
-        if(EnableDebugRocketSpawn && Input.GetKeyDown("space"))
+        if (EnableDebugRocketSpawn && Input.GetKeyDown("space"))
         {
             SpawnRocket();
         }
+
+        if (Input.GetKey(KeyCode.T))
+        {
+            RocketStartAngle += 0.01f;
+        }
+        else if (Input.GetKey(KeyCode.Y))
+        {
+            RocketStartAngle -= 0.01f;
+        }
+
+        var oldRotation = RocketStartMarker.transform.rotation.eulerAngles;
+        RocketStartMarker.transform.rotation = Quaternion.Euler(oldRotation.x, RocketStartAngle*Mathf.Rad2Deg*-1, oldRotation.z);
     }
 
     public void SpawnRocket()
     {
         rocket = Instantiate(RocketPrefab);
         rocket.transform.SetParent(transform);
+        rocket.transform.localPosition= Vector3.zero;
         rocket.name = "Rocket";
-        rocket.transform.position = transform.position + new Vector3(0, startPositionZ, 0);
-        if (startDirectionX == 0 && startDirectionY == 0) velocity = Vector3.forward;
-        else
-        {
-            velocity = new Vector3(startDirectionX, 0, startDirectionY);
-            velocity.Normalize();
-        }
 
+        var initialVelocity2D = RadianToVector2(RocketStartAngle+Mathf.PI*0.5f);
+        var velocity = new Vector3(initialVelocity2D.x,0, initialVelocity2D.y);
         rocket.GetComponent<RocketScript>().SetVelocity(velocity);
+    }
+
+    private static Vector2 RadianToVector2(float radian)
+    {
+        return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
     }
 }

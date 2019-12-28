@@ -15,43 +15,40 @@ namespace Assets.Scripts.Rocket
 
         void Update()
         {
-            var rocket1 = this.gameObject;
-            if (rocket1 != null)
-            {
                 Vector3 newPosition;
                 var z = Vector3.up;
                 if (Input.GetKey("left"))
                 {
                     velocity = Quaternion.AngleAxis(rotationSpeed, z) * velocity;
-                    rocket1.transform.rotation = Quaternion.AngleAxis(rotationSpeed, z) * rocket1.transform.rotation;
+                    transform.rotation = Quaternion.AngleAxis(rotationSpeed, z) *transform.rotation;
                 }
 
                 if (Input.GetKey("right"))
                 {
                     velocity = Quaternion.AngleAxis(-rotationSpeed, z) * velocity;
-                    rocket1.transform.rotation = Quaternion.AngleAxis(-rotationSpeed, z) * rocket1.transform.rotation;
+                    transform.rotation = Quaternion.AngleAxis(-rotationSpeed, z) *transform.rotation;
                 }
 
                 if (Input.GetKey("up"))
                 {
-                    newPosition = rocket1.transform.position + 2 * velocity;
+                    newPosition =transform.position + 2 * velocity;
                 }
                 else
                 {
-                    newPosition = rocket1.transform.position + velocity;
+                    newPosition =transform.position + velocity;
                 }
 
-                rocket1.transform.position = newPosition;
+                transform.position = newPosition;
                 if (Input.GetKey("down"))
                 {
-                    Destroy(rocket1);
+                    Destroy(this.gameObject);
                 }
-            }
         }
 
         public void SetVelocity(Vector3 newVelocity)
         {
             velocity = newVelocity * speed;
+            transform.rotation = Quaternion.LookRotation(velocity, Vector3.up);
         }
     }
 }

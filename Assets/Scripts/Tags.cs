@@ -10,5 +10,6 @@ namespace Assets.Scripts
     {
         public static string RocketTag = "Rocket";
         public static string FlyingVehicleTag = "FlyingVehicle";
+        public static string BattlegroundTag = "Battleground";
     }
 }
