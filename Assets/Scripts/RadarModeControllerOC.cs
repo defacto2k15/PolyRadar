@@ -10,63 +10,82 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class RadarModeControllerOC : MonoBehaviour
+    public class RadarModeControllerOC : SingleGameModeController
     {
         public VehiclesSelectingManagerOC VehicleSelectionManager;
         public RocketSpawnerScript RocketSpawner;
         private RadarModeCondition _condition = RadarModeCondition.SearchingTarget;
+        private bool _inputEnabled = false;
 
         public void Update()
         {
-            if (_condition == RadarModeCondition.SearchingTarget)
+            if (_inputEnabled)
             {
-                int selectedMarkerOffset = 0;
-                if (Input.GetKeyDown(KeyCode.A))
+                if (_condition == RadarModeCondition.SearchingTarget)
                 {
-                    selectedMarkerOffset = 1;
-                }
-                else if (Input.GetKeyDown(KeyCode.S))
-                {
-                    selectedMarkerOffset = -1;
-                }
-
-                if (VehicleSelectionManager.HasSelectableVehicle && selectedMarkerOffset != 0)
-                {
-                    VehicleSelectionManager.ChangeVehicleSelection(selectedMarkerOffset);
-                }
-
-                if (VehicleSelectionManager.HasSelectedVehicle)
-                {
-                    VehicleAffinity affinity = VehicleAffinity.Unknown;
-                    if (Input.GetKeyDown(KeyCode.Q))
+                    int selectedMarkerOffset = 0;
+                    if (Input.GetKeyDown(KeyCode.A))
                     {
-                        affinity = VehicleAffinity.Foe;
+                        selectedMarkerOffset = 1;
                     }
-                    else if (Input.GetKeyDown(KeyCode.W))
+                    else if (Input.GetKeyDown(KeyCode.S))
                     {
-                        affinity = VehicleAffinity.Friend;
+                        selectedMarkerOffset = -1;
                     }
 
-                    if (affinity != VehicleAffinity.Unknown)
+                    if (VehicleSelectionManager.HasSelectableVehicle && selectedMarkerOffset != 0)
                     {
-                        VehicleSelectionManager.SetVehicleAffinity(VehicleSelectionManager.SelectedVehicle, affinity);
+                        VehicleSelectionManager.ChangeVehicleSelection(selectedMarkerOffset);
+                    }
+
+                    if (VehicleSelectionManager.HasSelectedVehicle)
+                    {
+                        VehicleAffinity affinity = VehicleAffinity.Unknown;
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            affinity = VehicleAffinity.Foe;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.W))
+                        {
+                            affinity = VehicleAffinity.Friend;
+                        }
+
+                        if (affinity != VehicleAffinity.Unknown)
+                        {
+                            VehicleSelectionManager.SetVehicleAffinity(VehicleSelectionManager.SelectedVehicle, affinity);
+                        }
+                    }
+
+
+                    if (FindObjectOfType<RocketScript>()!=null)
+                    {
+                        _condition = RadarModeCondition.SteeringRocket;
                     }
                 }
-
-
-                if (Input.GetKeyDown(KeyCode.Space))
+                else if (_condition == RadarModeCondition.SteeringRocket)
                 {
-                    RocketSpawner.SpawnRocket();
-                    _condition = RadarModeCondition.SteeringRocket;
+                    if (FindObjectOfType<RocketScript>() == null)
+                    {
+                        _condition = RadarModeCondition.SearchingTarget;
+                    }
                 }
             }
-            else if (_condition == RadarModeCondition.SteeringRocket)
-            {
-                if (FindObjectOfType<RocketScript>() == null)
-                {
-                    _condition = RadarModeCondition.SearchingTarget;
-                }
-            }
+        }
+
+        public override void DisableMode()
+        {
+            ChangeInputEnabled(false);
+        }
+
+        private void ChangeInputEnabled(bool isEnabled)
+        {
+            _inputEnabled = isEnabled;
+            RocketSpawner.ChangeInputEnabled(isEnabled);
+        }
+
+        public override void EnableMode()
+        {
+            ChangeInputEnabled(true);
         }
     }
 

@@ -5,33 +5,36 @@ using UnityEngine;
 
 public class RocketSpawnerScript : MonoBehaviour
 {
-    public bool EnableDebugRocketSpawn = true;
     public GameObject RocketPrefab;
     public GameObject RocketStartMarker;
     public float RocketStartAngle;
     GameObject rocket = null;
+    private bool _inputEnabled;
 
     void Update()
     {
-        if (EnableDebugRocketSpawn && Input.GetKeyDown("space"))
+        if (_inputEnabled)
         {
-            SpawnRocket();
-        }
+            if (Input.GetKeyDown("space"))
+            {
+                SpawnRocket();
+            }
 
-        if (Input.GetKey(KeyCode.T))
-        {
-            RocketStartAngle += 0.01f;
-        }
-        else if (Input.GetKey(KeyCode.Y))
-        {
-            RocketStartAngle -= 0.01f;
-        }
+            if (Input.GetKey(KeyCode.T))
+            {
+                RocketStartAngle += 0.01f;
+            }
+            else if (Input.GetKey(KeyCode.Y))
+            {
+                RocketStartAngle -= 0.01f;
+            }
 
-        var oldRotation = RocketStartMarker.transform.rotation.eulerAngles;
-        RocketStartMarker.transform.rotation = Quaternion.Euler(oldRotation.x, RocketStartAngle*Mathf.Rad2Deg*-1, oldRotation.z);
+            var oldRotation = RocketStartMarker.transform.rotation.eulerAngles;
+            RocketStartMarker.transform.rotation = Quaternion.Euler(oldRotation.x, RocketStartAngle * Mathf.Rad2Deg * -1, oldRotation.z);
+        }
     }
 
-    public void SpawnRocket()
+    private void SpawnRocket()
     {
         rocket = Instantiate(RocketPrefab);
         rocket.transform.SetParent(transform);
@@ -46,5 +49,10 @@ public class RocketSpawnerScript : MonoBehaviour
     private static Vector2 RadianToVector2(float radian)
     {
         return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+    }
+
+    public void ChangeInputEnabled(bool isEnabled)
+    {
+        _inputEnabled = isEnabled;
     }
 }
