@@ -228,6 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0838830265cd54d95adff017518c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DestructionParticlePrefab: {fileID: 100000, guid: 798cf21183130e8489b3e2b9b66c5cab,
+    type: 3}
   ParentVehicle: {fileID: 2726953664263454296}
 --- !u!1001 &2726953663163465454
 PrefabInstance:

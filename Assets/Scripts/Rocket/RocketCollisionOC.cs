@@ -9,19 +9,27 @@ namespace Assets.Scripts.Rocket
 {
     public class RocketCollisionOC : MonoBehaviour
     {
+        public GameObject DestructionParticlePrefab; 
+
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag(Tags.FlyingVehicleTag))
             {
-                GameObject.Destroy(this.gameObject);
+                DestroyRocket();
             }
+        }
+
+        private void DestroyRocket()
+        {
+            Instantiate(DestructionParticlePrefab, transform.position, transform.rotation);
+            GameObject.Destroy(this.gameObject);
         }
 
         void OnTriggerExit(Collider other)
         {
             if (other.gameObject.CompareTag(Tags.BattlegroundTag))
             {
-                GameObject.Destroy(this.gameObject);
+                DestroyRocket();
             }
         }
     }

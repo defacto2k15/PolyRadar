@@ -9,12 +9,14 @@ namespace Assets.Scripts.Vehicles
 {
     public class VehicleCollisionOC : MonoBehaviour
     {
+        public GameObject DestructionParticlePrefab;
         public VehicleOC ParentVehicle;
 
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag(Tags.RocketTag))
             {
+                Instantiate(DestructionParticlePrefab, gameObject.transform.position, gameObject.transform.rotation);
                 ParentVehicle.WasHit();
             }
         }
