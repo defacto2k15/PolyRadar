@@ -16,9 +16,11 @@ namespace Assets.Scripts.OscilloscopeDisplay
         [Range(-1,1)]
         public float AnnealingOffsetPerSecond;
 
+        public TimeProviderGo TimeProvider;
+
         public void Update()
         {
-            var currentFps = 1f / Time.deltaTime;
+            var currentFps = 1f / TimeProvider.DeltaTime;
 
             var perFrameAnnealingSpeedMultiplier = Mathf.Pow(AnnealingMultiplierPerSecond, 1 / currentFps);
             var perFrameAnnealingSpeedOffset = AnnealingOffsetPerSecond / currentFps;

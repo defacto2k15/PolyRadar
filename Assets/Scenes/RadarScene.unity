@@ -1607,8 +1607,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944178002}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 1.99}
-  m_LocalScale: {x: 3, y: 9, z: 4}
+  m_LocalPosition: {x: 4.5, y: 0, z: 1.99}
+  m_LocalScale: {x: 4, y: 9, z: 4}
   m_Children: []
   m_Father: {fileID: 1716532427}
   m_RootOrder: 5
@@ -1829,6 +1829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1055056601}
   - component: {fileID: 1055056600}
+  - component: {fileID: 1055056602}
   m_Layer: 0
   m_Name: RadarGameSegmentRoot
   m_TagString: Untagged
@@ -1848,6 +1849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cddda1501946bf448f294fd525f685d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeProvider: {fileID: 1055056602}
   VehicleSelectionManager: {fileID: 402511458}
   RocketSpawner: {fileID: 1419756540}
 --- !u!4 &1055056601
@@ -1867,6 +1869,18 @@ Transform:
   m_Father: {fileID: 914310752}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1055056602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055056599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5167aee89f6c532428dfda1085d0a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1086341643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,7 +2166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1188291505}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.75, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -12.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 816535473}
@@ -2334,6 +2348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RotationSpeedInDegreesPerSecond: 180
   TextureManager: {fileID: 1378668701}
+  TimeProvider: {fileID: 1055056602}
 --- !u!23 &1378668698
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2417,6 +2432,7 @@ MonoBehaviour:
   BeamAngleInDegrees: 0
   AnnealingMultiplierPerSecond: 0.5
   AnnealingOffsetPerSecond: -0.5
+  TimeProvider: {fileID: 1055056602}
 --- !u!114 &1378668702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2640,8 +2656,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1523500492}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 1.99}
-  m_LocalScale: {x: 3, y: 9, z: 4}
+  m_LocalPosition: {x: -9.5, y: 0, z: 1.99}
+  m_LocalScale: {x: 4, y: 9, z: 4}
   m_Children: []
   m_Father: {fileID: 1716532427}
   m_RootOrder: 2

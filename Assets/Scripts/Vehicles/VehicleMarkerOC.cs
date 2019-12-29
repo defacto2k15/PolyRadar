@@ -12,6 +12,7 @@ namespace Assets.Scripts.Vehicles
 {
     public class VehicleMarkerOC : MarkerOC
     {
+        public TimeProviderGo TimeProvider;
         public GameObject DirectionTail;
         public float DurationToDisappearMarker;
         public Color DefaultColor;
@@ -21,6 +22,10 @@ namespace Assets.Scripts.Vehicles
 
         private float _lastPingTime;
 
+        public void Start()
+        {
+            TimeProvider = FindObjectOfType<TimeProviderGo>();//TODO temporary bad solution
+        }
 
         private void UpdateDirection(Vector2 movementDelta)
         {
@@ -34,14 +39,14 @@ namespace Assets.Scripts.Vehicles
             {
                 UpdateDirection(movementDelta);
                 transform.position = new Vector3(vehiclePosition.x, transform.position.y, vehiclePosition.z);
-                _lastPingTime = Time.time;
+                _lastPingTime = TimeProvider.TimeSinceStart;
                 ApplyMarkerVisiblityPack(new VisibilityChangePack(){ChangingObject = this, Visibility = true});
             }
         }
 
         void Update()
         {
-            if (Time.time - _lastPingTime > DurationToDisappearMarker)
+            if (TimeProvider.TimeSinceStart - _lastPingTime > DurationToDisappearMarker)
             {
                 ApplyMarkerVisiblityPack(new VisibilityChangePack(){ChangingObject = this, Visibility = false});
             }

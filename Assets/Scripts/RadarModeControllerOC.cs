@@ -12,6 +12,7 @@ namespace Assets.Scripts
 {
     public class RadarModeControllerOC : SingleGameModeController
     {
+        public TimeProviderGo TimeProvider;
         public VehiclesSelectingManagerOC VehicleSelectionManager;
         public RocketSpawnerScript RocketSpawner;
         private RadarModeCondition _condition = RadarModeCondition.SearchingTarget;
@@ -75,6 +76,7 @@ namespace Assets.Scripts
         public override void DisableMode()
         {
             ChangeInputEnabled(false);
+            TimeProvider.TimeUpdateEnabled = false;
         }
 
         private void ChangeInputEnabled(bool isEnabled)
@@ -86,6 +88,7 @@ namespace Assets.Scripts
         public override void EnableMode()
         {
             ChangeInputEnabled(true);
+            TimeProvider.TimeUpdateEnabled = true;
         }
     }
 

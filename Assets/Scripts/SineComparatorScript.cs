@@ -21,7 +21,6 @@ public class SineComparatorScript : MonoBehaviour
     void Update()
     {
         int sum = 0;
-        print(target.getDotPosition(0).y + " " + response.getDotPosition(0).y);
         for (int i = 0; i < target.DotsCount; i++)
         {
             if (Mathf.Abs(target.getDotPosition(i).y - response.getDotPosition(i).y) < Epsilon)
