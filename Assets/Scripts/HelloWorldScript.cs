@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HelloWorldScript : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         Debug.Log("Hello world");
     }
 
-    void Update()
+    private void Update()
     {
-        
     }
 }

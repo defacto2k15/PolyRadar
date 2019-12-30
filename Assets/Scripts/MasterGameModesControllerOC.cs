@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,53 +12,77 @@ namespace Assets.Scripts
     {
         public Camera Camera;
         public SingleGameModeController SineComparisionModeRoot;
-        public GameObject SineComparisionModeCameraPosition;
 
         public SingleGameModeController RadarModeRoot;
-        public GameObject RadarModeCameraPosition;
 
         private GameMode _currentMode;
+        private bool _duringModeChange;
 
         public void Start()
         {
-            ChangeMode(GameMode.RadarMode);
+            StartCoroutine(ChangeMode(GameMode.RadarMode));
         }
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (!_duringModeChange)
             {
-                if (_currentMode == GameMode.RadarMode)
+                if (Input.GetKeyDown(KeyCode.P))
                 {
-                    ChangeMode(GameMode.SineMode);
+                    if (_currentMode == GameMode.RadarMode)
+                    {
+                        StartCoroutine(ChangeMode(GameMode.SineMode));
+                    }
+                    else
+                    {
+                        StartCoroutine(ChangeMode(GameMode.RadarMode));
+                    }
                 }
-                else
-                {
-                    ChangeMode(GameMode.RadarMode);
-                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                Camera.GetComponent<MainCameraAnimationControllerOC>().MoveToRadar();
+            }
+            else if (Input.GetKeyDown(KeyCode.K))
+            {
+                Camera.GetComponent<MainCameraAnimationControllerOC>().MoveToSine();
             }
         }
 
-        public void ChangeMode(GameMode newMode)
+        public IEnumerator ChangeMode(GameMode newMode)
         {
+            _duringModeChange = true;
             _currentMode = newMode;
+
+            var mainCameraAnimationController = Camera.GetComponent<MainCameraAnimationControllerOC>();
+            if (_currentMode == GameMode.RadarMode)
+            {
+                SineComparisionModeRoot.DisableMode();
+
+                mainCameraAnimationController.MoveToRadar();
+            }
+            else
+            {
+                RadarModeRoot.DisableMode();
+
+                mainCameraAnimationController.MoveToSine();
+            }
+
+            Debug.Log("Yield started");
+            yield return mainCameraAnimationController.WaitForTransitionAnimationToEnd();
+            Debug.Log("Yield ended");
 
             if (_currentMode == GameMode.RadarMode)
             {
                 RadarModeRoot.EnableMode();
-                SineComparisionModeRoot.DisableMode();
-
-                Camera.transform.position = RadarModeCameraPosition.transform.position;
-                Camera.transform.rotation= RadarModeCameraPosition.transform.rotation;
             }
             else
             {
                 SineComparisionModeRoot.EnableMode();
-                RadarModeRoot.DisableMode();
-
-                Camera.transform.position = SineComparisionModeCameraPosition.transform.position;
-                Camera.transform.rotation= SineComparisionModeCameraPosition.transform.rotation;
             }
+
+            _duringModeChange = false;
         }
     }
 
