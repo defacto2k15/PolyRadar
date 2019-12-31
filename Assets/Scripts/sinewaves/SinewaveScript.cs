@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.RadarBattleground;
 using UnityEngine;
 
 public class SinewaveScript : MonoBehaviour
@@ -53,7 +54,8 @@ public class SinewaveScript : MonoBehaviour
 
     public void setDotColor(int i, Color c)
     {
-        _dots[i].GetComponent<Renderer>().material.color = c;
+        _dots[i].GetComponent<MaterialPropertyBlockColorSetterOC>().Color = c;
+        _dots[i].GetComponent<MaterialPropertyBlockColorSetterOC>().UpdateColor();
     }
 
     public Vector3 getDotPosition(int i)
