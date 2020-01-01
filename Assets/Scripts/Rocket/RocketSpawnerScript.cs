@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Rocket;
+using Assets.Scripts.Vehicles;
 using UnityEngine;
 
 public class RocketSpawnerScript : MonoBehaviour
@@ -8,7 +9,6 @@ public class RocketSpawnerScript : MonoBehaviour
     public GameObject RocketPrefab;
     public GameObject RocketStartMarker;
     public float RocketStartAngle;
-    GameObject rocket = null;
     private bool _inputEnabled;
 
     void Update()
@@ -36,7 +36,7 @@ public class RocketSpawnerScript : MonoBehaviour
 
     private void SpawnRocket()
     {
-        rocket = Instantiate(RocketPrefab);
+        var rocket = Instantiate(RocketPrefab);
         rocket.transform.SetParent(transform);
         rocket.transform.localPosition= Vector3.zero;
         rocket.name = "Rocket";
@@ -45,6 +45,7 @@ public class RocketSpawnerScript : MonoBehaviour
         var velocity = new Vector3(initialVelocity2D.x,0, initialVelocity2D.y);
         rocket.GetComponent<RocketScript>().SetVelocity(velocity);
     }
+
 
     private static Vector2 RadianToVector2(float radian)
     {

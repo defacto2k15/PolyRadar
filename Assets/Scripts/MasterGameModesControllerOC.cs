@@ -11,9 +11,9 @@ namespace Assets.Scripts
     public class MasterGameModesControllerOC : MonoBehaviour
     {
         public Camera Camera;
-        public SingleGameModeController SineComparisionModeRoot;
+        public SineGameModeControllerOC SineComparisionModeRoot;
 
-        public SingleGameModeController RadarModeRoot;
+        public RadarModeControllerOC RadarModeRoot;
 
         private GameMode _currentMode;
         private bool _duringModeChange;
@@ -53,10 +53,9 @@ namespace Assets.Scripts
         public IEnumerator ChangeMode(GameMode newMode)
         {
             _duringModeChange = true;
-            _currentMode = newMode;
 
             var mainCameraAnimationController = Camera.GetComponent<MainCameraAnimationControllerOC>();
-            if (_currentMode == GameMode.RadarMode)
+            if (newMode== GameMode.RadarMode)
             {
                 SineComparisionModeRoot.DisableMode();
 
@@ -64,17 +63,26 @@ namespace Assets.Scripts
             }
             else
             {
+                var selectedVehicleDetails = RadarModeRoot.SelectedVehicleDetails;
+                if (selectedVehicleDetails == null)
+                {
+                    _duringModeChange = false;
+                    yield break;
+                }
                 RadarModeRoot.DisableMode();
+                SineComparisionModeRoot.CurrentVehicleDetails = selectedVehicleDetails;
 
                 mainCameraAnimationController.MoveToSine();
             }
 
-            Debug.Log("Yield started");
             yield return mainCameraAnimationController.WaitForTransitionAnimationToEnd();
-            Debug.Log("Yield ended");
 
-            if (_currentMode == GameMode.RadarMode)
+            if (newMode == GameMode.RadarMode)
             {
+                if (SineComparisionModeRoot.WasMatchAchieved)
+                {
+                    RadarModeRoot.UnveilAffinityOfSelectedVehicle();
+                }
                 RadarModeRoot.EnableMode();
             }
             else
@@ -82,6 +90,7 @@ namespace Assets.Scripts
                 SineComparisionModeRoot.EnableMode();
             }
 
+            _currentMode = newMode;
             _duringModeChange = false;
         }
     }

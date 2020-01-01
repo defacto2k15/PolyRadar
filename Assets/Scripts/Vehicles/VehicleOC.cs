@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.Scripts.OscilloscopeDisplay;
 using Assets.Scripts.RadarBattleground;
 using Assets.Scripts.Visibility;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = System.Random;
 
 namespace Assets.Scripts.Vehicles
 {
@@ -18,12 +15,16 @@ namespace Assets.Scripts.Vehicles
         public VehicleVisibilityOC Visibility;
         public VehicleMarkerOC Marker;
 
+        public VehicleDetails Details;
         private bool _isSelected;
         private VehicleAffinity _affinity;
 
-        void Start()
+        private static int _lastVehicleId;
+
+        private void Start()
         {
             Affinity = VehicleAffinity.Unknown;
+            Details = VehicleDetails.GenerateRandomDetails(_lastVehicleId++);
         }
 
         public void MyUpdate(Vector2 flatCenter, RadarBeamSetting beamSetting, HeightmapArrayFromWorldSpaceSampler occlusionHeightmapArraySampler)
@@ -31,13 +32,53 @@ namespace Assets.Scripts.Vehicles
             Marker.MyUpdate(flatCenter, Visibility.transform.position, MovementTracker.MovementDirection, beamSetting, occlusionHeightmapArraySampler);
         }
 
-        void Update()
+        private void Update()
         {
             if (!Marker.CanBeVisible)
             {
                 IsSelected = false;
             }
         }
+
+        public void SetVisible(bool isVisible)
+        {
+            Visibility.SetVisibility(isVisible);
+        }
+
+        public void ApplyMarkerVisiblityPack(VisibilityChangePack pack)
+        {
+            Marker.ApplyMarkerVisiblityPack(pack);
+        }
+
+        public void WasHit()
+        {
+            Debug.Log("Plane of affinity " + Affinity + " was destroyed");
+            Destroy(this.gameObject);
+        }
+
+        public void UnveilAffinity()
+        {
+            if (Details.KnownAffinity == KnownVehicleAffinity.Friend)
+            {
+                Affinity = VehicleAffinity.Friend;
+            }
+            else
+            {
+                Affinity = VehicleAffinity.Foe;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                Marker.UpdateColor(_isSelected, _affinity);
+            }
+        }
+
+        public bool CanBeSelected => _affinity == VehicleAffinity.Unknown && Marker.CanBeVisible;
 
         public VehicleAffinity Affinity
         {
@@ -51,32 +92,28 @@ namespace Assets.Scripts.Vehicles
                 Marker.UpdateColor(_isSelected, _affinity);
             }
         }
+    }
 
-        public void SetVisible(bool isVisible)
+    [Serializable]
+    public class VehicleDetails
+    {
+        public KnownVehicleAffinity KnownAffinity;
+        public int ID;
+
+        public static VehicleDetails GenerateRandomDetails(int id)
         {
-            Visibility.SetVisibility(isVisible);
-        }
-        public bool IsSelected  
-        {
-            get { return _isSelected; }
-            set
+            var rand = new Random(id);
+
+            var affinity = KnownVehicleAffinity.Foe;
+            if (rand.Next(2) == 1)
             {
-                _isSelected = value;
-                Marker.UpdateColor(_isSelected, _affinity);
+                affinity = KnownVehicleAffinity.Friend;
             }
-        }
-
-        public bool CanBeSelected => _affinity == VehicleAffinity.Unknown && Marker.CanBeVisible;
-
-        public void ApplyMarkerVisiblityPack(VisibilityChangePack pack)
-        {
-            Marker.ApplyMarkerVisiblityPack(pack);
-        }
-
-        public void WasHit()
-        {
-            Debug.Log("Plane of affinity "+Affinity+" was destroyed");
-            Destroy(this.gameObject);
+            return new VehicleDetails()
+            {
+                ID = id,
+                KnownAffinity = affinity
+            };
         }
     }
 }

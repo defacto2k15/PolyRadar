@@ -18,6 +18,21 @@ namespace Assets.Scripts
         private RadarModeCondition _condition = RadarModeCondition.SearchingTarget;
         private bool _inputEnabled = false;
 
+        public VehicleDetails SelectedVehicleDetails
+        {
+            get
+            {
+                if (!VehicleSelectionManager.HasSelectedVehicle)
+                {
+                    return null;
+                }
+                else
+                {
+                    return VehicleSelectionManager.SelectedVehicle.Details;
+                }
+            }
+        }
+
         public void Update()
         {
             if (_inputEnabled)
@@ -90,6 +105,14 @@ namespace Assets.Scripts
             ChangeInputEnabled(true);
             TimeProvider.TimeUpdateEnabled = true;
         }
+
+        public void UnveilAffinityOfSelectedVehicle()
+        {
+            if (VehicleSelectionManager.HasSelectedVehicle)
+            {
+                VehicleSelectionManager.SelectedVehicle.UnveilAffinity();
+            }
+        }
     }
 
     public enum RadarModeCondition
@@ -100,5 +123,10 @@ namespace Assets.Scripts
     public enum VehicleAffinity
     {
         Unknown, Friend, Foe
+    }
+
+    public enum KnownVehicleAffinity
+    {
+         Friend, Foe
     }
 }

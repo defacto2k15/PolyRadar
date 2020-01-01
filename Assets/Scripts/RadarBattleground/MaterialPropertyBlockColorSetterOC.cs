@@ -25,6 +25,12 @@ namespace Assets.Scripts.RadarBattleground
             UpdateColor();
         }
 
+        public void ChangeColorAndUpdate(Color newColor)
+        {
+            Color = newColor;
+            UpdateColor();
+        }
+
         public void UpdateColor()
         {
             AffirmFieldArePresent();
