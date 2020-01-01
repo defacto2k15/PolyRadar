@@ -1369,6 +1369,7 @@ MonoBehaviour:
   SineUiRoot: {fileID: 870570494}
   SineComparator: {fileID: 976850690}
   MatchText: {fileID: 1155849519}
+  WasMatchAchieved: 0
 --- !u!1 &773824304
 GameObject:
   m_ObjectHideFlags: 0
@@ -4222,6 +4223,36 @@ PrefabInstance:
         type: 3}
       propertyPath: MatchAchievedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: responseDotColorNeutral.r
+      value: 0.7169812
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: responseDotColorNeutral.g
+      value: 0.59035355
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: responseDotColorNeutral.b
+      value: 0.3009968
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: targetDotColorNeutral.r
+      value: 0.7176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: targetDotColorNeutral.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: targetDotColorNeutral.b
+      value: 0.6531324
       objectReference: {fileID: 0}
     - target: {fileID: 3291582404775925689, guid: 458620e5bf2c3714d853662c2d0f14e6,
         type: 3}
