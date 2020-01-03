@@ -12,6 +12,7 @@ namespace Assets.Scripts.Rocket
         public Vector3 velocity;
         public float speed = 0.01f;
         public float rotationSpeed = 0.5f;
+        public float HeightChangeSpeed = 1;
 
         void Update()
         {
@@ -29,20 +30,23 @@ namespace Assets.Scripts.Rocket
                     transform.rotation = Quaternion.AngleAxis(-rotationSpeed, z) *transform.rotation;
                 }
 
+                newPosition =transform.position + velocity;
+
+
                 if (Input.GetKey("up"))
                 {
-                    newPosition =transform.position + 2 * velocity;
+                    newPosition += new Vector3(0, HeightChangeSpeed*Time.deltaTime, 0); 
                 }
-                else
+                if (Input.GetKey("down"))
                 {
-                    newPosition =transform.position + velocity;
+                    newPosition += new Vector3(0, -HeightChangeSpeed*Time.deltaTime, 0); 
                 }
 
-                transform.position = newPosition;
-                if (Input.GetKey("down"))
+                if (Input.GetKeyDown(KeyCode.M))
                 {
                     Destroy(this.gameObject);
                 }
+                transform.position = newPosition;
         }
 
         public void SetVelocity(Vector3 newVelocity)

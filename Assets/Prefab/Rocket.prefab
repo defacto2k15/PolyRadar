@@ -46,7 +46,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 10, z: 0.8}
+  m_Size: {x: 0.4, y: 0.3, z: 0.8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6888492061824211474
 MonoBehaviour:
@@ -61,8 +61,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
-  speed: 0.1
+  speed: 0.01
   rotationSpeed: 0.5
+  HeightChangeSpeed: 1
 --- !u!114 &7374570382489582401
 MonoBehaviour:
   m_ObjectHideFlags: 0

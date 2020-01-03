@@ -17,7 +17,10 @@ public class RocketSpawnerScript : MonoBehaviour
         {
             if (Input.GetKeyDown("space"))
             {
-                SpawnRocket();
+                if (FindObjectOfType<RocketScript>() == null)
+                {
+                    SpawnRocket();
+                }
             }
 
             if (Input.GetKey(KeyCode.T))
@@ -38,7 +41,7 @@ public class RocketSpawnerScript : MonoBehaviour
     {
         var rocket = Instantiate(RocketPrefab);
         rocket.transform.SetParent(transform);
-        rocket.transform.localPosition= Vector3.zero;
+        rocket.transform.localPosition= new Vector3(0,0.1f, 0);
         rocket.name = "Rocket";
 
         var initialVelocity2D = RadianToVector2(RocketStartAngle+Mathf.PI*0.5f);
