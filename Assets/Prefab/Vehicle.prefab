@@ -49,6 +49,9 @@ MonoBehaviour:
   MovementTracker: {fileID: 2726953664639274190}
   Visibility: {fileID: 2726953664639274195}
   Marker: {fileID: 987084775481538567}
+  Details:
+    KnownAffinity: 0
+    ID: 0
 --- !u!1 &2726953664639274198
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,11 +65,12 @@ GameObject:
   - component: {fileID: 2726953664639274193}
   - component: {fileID: 2726953664639274194}
   - component: {fileID: 2726953664639274196}
-  - component: {fileID: 2726953664639274191}
   - component: {fileID: 2726953664639274190}
   - component: {fileID: 2726953664639274189}
   - component: {fileID: 2726953664639274195}
   - component: {fileID: 2726953664639274188}
+  - component: {fileID: 4349056684785529514}
+  - component: {fileID: 8585466209660295481}
   m_Layer: 0
   m_Name: FlyingMesh
   m_TagString: FlyingVehicle
@@ -162,20 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Color: {r: 1, g: 0, b: 0, a: 0}
   ChangeInChildren: 0
---- !u!114 &2726953664639274191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2726953664639274198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b56fb04dde40b04299b21834a971fd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlightSpeed: 0.1
-  FlightRadius: 2
 --- !u!114 &2726953664639274190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +221,43 @@ MonoBehaviour:
   DestructionParticlePrefab: {fileID: 100000, guid: 798cf21183130e8489b3e2b9b66c5cab,
     type: 3}
   ParentVehicle: {fileID: 2726953664263454296}
+--- !u!114 &4349056684785529514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726953664639274198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3aa0504671eb34a8ededb4b450388c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeProvider: {fileID: 0}
+  r_center: {x: 30, y: 0, z: 30}
+  r_radius: 5
+  inner_radius: 0.5
+  outer_radius: 5
+  velocity: 0.33
+  max_turning_angle: 0.03
+  max_rotor_change: 0.05
+  max_time: 5000
+--- !u!54 &8585466209660295481
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726953664639274198}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &2726953663163465454
 PrefabInstance:
   m_ObjectHideFlags: 0

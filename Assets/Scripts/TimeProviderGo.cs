@@ -38,6 +38,7 @@ namespace Assets.Scripts
         public bool TimeUpdateEnabled
         {
             set => _timeUpdateEnabled = value;
+            get => _timeUpdateEnabled;
         }
 
         public float TimeSinceStart => _enabledTimeSinceStart;
