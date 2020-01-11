@@ -29,7 +29,8 @@ namespace Assets.Scripts.Vehicles
 
         public void MyUpdate(Vector2 flatCenter, RadarBeamSetting beamSetting, HeightmapArrayFromWorldSpaceSampler occlusionHeightmapArraySampler)
         {
-            Marker.MyUpdate(flatCenter, Visibility.transform.position, MovementTracker.MovementDirection, beamSetting, occlusionHeightmapArraySampler);
+            var movementTrackerMovementDirection = MovementTracker.MovementDirection;
+            Marker.MyUpdate(flatCenter, Visibility.transform.position, movementTrackerMovementDirection, beamSetting, occlusionHeightmapArraySampler);
         }
 
         private void Update()

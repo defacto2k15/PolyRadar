@@ -88,10 +88,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AnnealingSpeedMultiplier: 0.98963517
-    - _AnnealingSpeedOffset: -0.0075156507
-    - _BeamAngleInDegrees: -59.987427
-    - _BeamAngleInDegreesDelta: 1.803772
+    - _AnnealingSpeedMultiplier: 0.98991835
+    - _AnnealingSpeedOffset: -0.0073093
+    - _BeamAngleInDegrees: 39.416748
+    - _BeamAngleInDegreesDelta: 1.7541504
     - _BeamIndicatorSize: 0.04
     - _BeamIndicatorSizeInDegrees: 0
     - _BumpScale: 1
