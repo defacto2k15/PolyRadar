@@ -16,14 +16,14 @@ public class PlaneAI : MonoBehaviour
     private static int LastPlaneIndex = 0;
 
     public TimeProviderGo TimeProvider;
-    public Vector3 r_center = new Vector3(0, 0, 0);
+    public Vector3 r_center = new Vector3(30, 0.2f, 30);
     public float r_radius = 5;
     public float inner_radius = 1;
     public float outer_radius = 4;
-    public float velocity = 3;
+    public float velocity = 0.33f;
     public float max_turning_angle = 0.01f;
-    public float max_rotor_change = 0.05f;
-    public int max_time = 5000;
+    public float max_rotor_change = 0.001f;
+    public int max_time = -1; /** -1 For infinite time
     
     /* 
     0 - Get into zone
@@ -65,7 +65,7 @@ public class PlaneAI : MonoBehaviour
             return;
         }
         var state = CheckZone();
-        if (timer < max_time) { timer += 1; }
+        if (max_time > 0) { if (timer < max_time) { timer += 1; } }
         switch (mode)
         {
             case 0:
@@ -90,6 +90,7 @@ public class PlaneAI : MonoBehaviour
                 if (state == 0) { mode = 1; rotor = randomGenerator.Range(-max_rotor_change, max_rotor_change); }
                 break;
             case 3:
+                rotor = 0;
                 break;
         }
         rotation += rotor;
