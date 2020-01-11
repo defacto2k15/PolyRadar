@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414fcb03597ee6349a15ff314a7f33dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TrackedQueueSize: 10
 --- !u!114 &2726953664639274189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,8 +240,8 @@ MonoBehaviour:
   inner_radius: 0.5
   outer_radius: 5
   velocity: 0.33
-  max_turning_angle: 0.03
-  max_rotor_change: 0.05
+  max_turning_angle: 0.015
+  max_rotor_change: 0.001
   max_time: 5000
 --- !u!54 &8585466209660295481
 Rigidbody:
