@@ -4,15 +4,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.OscilloscopeDisplay;
 using Assets.Scripts.RadarBattleground;
+using Assets.Scripts.Sound;
 using Assets.Scripts.Visibility;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Vehicles
 {
+    [RequireComponent(typeof(VehicleSoundOC))]
     public class VehicleMarkerOC : MarkerOC
     {
         public TimeProviderGo TimeProvider;
+
         public GameObject DirectionTail;
         public float DurationToDisappearMarker;
         public Color DefaultColor;
@@ -21,10 +24,12 @@ namespace Assets.Scripts.Vehicles
         public Color SelectedColor;
 
         private float _lastPingTime;
+        private VehicleSoundOC _sound;
 
-        public void Start()
+        void Start()
         {
-            TimeProvider = FindObjectOfType<TimeProviderGo>();//TODO temporary bad solution
+            _sound = GetComponent<VehicleSoundOC>();
+            Debug.Log("STR: "+_sound);
         }
 
         private void UpdateDirection(Vector2 movementDelta)
@@ -41,6 +46,7 @@ namespace Assets.Scripts.Vehicles
                 transform.position = new Vector3(vehiclePosition.x, transform.position.y, vehiclePosition.z);
                 _lastPingTime = TimeProvider.TimeSinceStart;
                 ApplyMarkerVisiblityPack(new VisibilityChangePack(){ChangingObject = this, Visibility = true});
+                _sound.StartBlipSound();
             }
         }
 

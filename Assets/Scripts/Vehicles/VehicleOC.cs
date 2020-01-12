@@ -8,6 +8,7 @@ using Random = System.Random;
 
 namespace Assets.Scripts.Vehicles
 {
+    [RequireComponent(typeof(VehicleSoundOC))]
     public class VehicleOC : MonoBehaviour
     {
         public VehicleAffinityColorChangerOC ColorChanger;
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Vehicles
         public VehicleDetails Details;
         private bool _isSelected;
         private VehicleAffinity _affinity;
+        private VehicleSoundOC _sound;
 
         private static int _lastVehicleId;
 

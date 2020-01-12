@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Rocket;
+using Assets.Scripts.Sound;
 using Assets.Scripts.Vehicles;
 using UnityEngine;
 
 public class RocketSpawnerScript : MonoBehaviour
 {
+    public SoundSourceMasterOC SoundSourceMaster;
     public GameObject RocketPrefab;
     public GameObject RocketStartMarker;
     public float RocketStartAngle;
@@ -47,6 +49,7 @@ public class RocketSpawnerScript : MonoBehaviour
         var initialVelocity2D = RadianToVector2(RocketStartAngle+Mathf.PI*0.5f);
         var velocity = new Vector3(initialVelocity2D.x,0, initialVelocity2D.y);
         rocket.GetComponent<RocketScript>().SetVelocity(velocity);
+        rocket.GetComponent<RocketSoundOC>().SoundMaster = SoundSourceMaster;
     }
 
 

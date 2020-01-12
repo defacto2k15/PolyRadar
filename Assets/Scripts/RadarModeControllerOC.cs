@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.RadarDisplay;
 using Assets.Scripts.Rocket;
+using Assets.Scripts.Sound;
 using Assets.Scripts.Vehicles;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Assets.Scripts
     public class RadarModeControllerOC : SingleGameModeController
     {
         public TimeProviderGo TimeProvider;
+        public SoundSourceMasterOC RadarSoundSource;
         public VehiclesSelectingManagerOC VehicleSelectionManager;
         public RocketSpawnerScript RocketSpawner;
         private RadarModeCondition _condition = RadarModeCondition.SearchingTarget;
@@ -42,10 +44,12 @@ namespace Assets.Scripts
                     int selectedMarkerOffset = 0;
                     if (Input.GetKeyDown(KeyCode.A))
                     {
+                        RadarSoundSource.StartOneShotSound(SingleShotSoundKind.TargetChange);
                         selectedMarkerOffset = 1;
                     }
                     else if (Input.GetKeyDown(KeyCode.S))
                     {
+                        RadarSoundSource.StartOneShotSound(SingleShotSoundKind.TargetChange);
                         selectedMarkerOffset = -1;
                     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Scripts.Sound;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -12,8 +13,8 @@ namespace Assets.Scripts
     {
         public Camera Camera;
         public SineGameModeControllerOC SineComparisionModeRoot;
-
         public RadarModeControllerOC RadarModeRoot;
+        public SoundSourceMasterOC SoundSourceMaster;
 
         private GameMode _currentMode;
         private bool _duringModeChange;
@@ -75,6 +76,7 @@ namespace Assets.Scripts
                 mainCameraAnimationController.MoveToSine();
             }
 
+            SoundSourceMaster.StartOneShotSound(SingleShotSoundKind.ModeChange);
             yield return mainCameraAnimationController.WaitForTransitionAnimationToEnd();
 
             if (newMode == GameMode.RadarMode)

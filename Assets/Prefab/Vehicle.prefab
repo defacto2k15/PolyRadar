@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &5155896087943944562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987084775481538585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1df7daf56ea7b94e991a48908d1835c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundMaster: {fileID: 0}
 --- !u!1 &2726953664263454298
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,6 +84,7 @@ GameObject:
   - component: {fileID: 2726953664639274188}
   - component: {fileID: 4349056684785529514}
   - component: {fileID: 8585466209660295481}
+  - component: {fileID: 3334665202688541324}
   m_Layer: 0
   m_Name: FlyingMesh
   m_TagString: FlyingVehicle
@@ -259,6 +273,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3334665202688541324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726953664639274198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1df7daf56ea7b94e991a48908d1835c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundMaster: {fileID: 0}
 --- !u!1001 &2726953663163465454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -333,6 +360,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b504fcd49ed8884b888109b3008b35d, type: 3}
+--- !u!1 &987084775481538585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2912353100873008887, guid: 3b504fcd49ed8884b888109b3008b35d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2726953663163465454}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &987084775481538584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2912353100873008886, guid: 3b504fcd49ed8884b888109b3008b35d,
@@ -345,7 +378,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 2726953663163465454}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 987084775481538585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3e8a0da338bf6c478a0ca3662bbe5e6, type: 3}

@@ -7,9 +7,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.Rocket
 {
+    [RequireComponent(typeof(RocketSoundOC))]
     public class RocketCollisionOC : MonoBehaviour
     {
-        public GameObject DestructionParticlePrefab; 
+        public GameObject DestructionParticlePrefab;
+        private RocketSoundOC _sound;
+
+        void Start()
+        {
+            _sound = GetComponent<RocketSoundOC>();
+        }
 
         void OnTriggerEnter(Collider other)
         {
@@ -21,6 +28,7 @@ namespace Assets.Scripts.Rocket
 
         private void DestroyRocket()
         {
+            _sound.StartRocketExplosionSound();
             Instantiate(DestructionParticlePrefab, transform.position, transform.rotation);
             GameObject.Destroy(this.gameObject);
         }

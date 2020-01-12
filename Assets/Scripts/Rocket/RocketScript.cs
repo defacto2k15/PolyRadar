@@ -7,12 +7,21 @@ using UnityEngine;
 
 namespace Assets.Scripts.Rocket
 {
+    [RequireComponent(typeof(RocketSoundOC))]
     public class RocketScript : MonoBehaviour
     {
         public Vector3 velocity;
         public float speed = 0.01f;
         public float rotationSpeed = 0.5f;
         public float HeightChangeSpeed = 1;
+        private RocketSoundOC _sound;
+
+        public void Start()
+        {
+            _sound = GetComponent<RocketSoundOC>();
+            _sound.StartIdleSound();
+            _sound.StartRocketStartSound();
+        }
 
         void Update()
         {
@@ -20,6 +29,7 @@ namespace Assets.Scripts.Rocket
                 var z = Vector3.up;
                 if (Input.GetKey("left"))
                 {
+
                     velocity = Quaternion.AngleAxis(rotationSpeed, z) * velocity;
                     transform.rotation = Quaternion.AngleAxis(rotationSpeed, z) *transform.rotation;
                 }

@@ -354,6 +354,58 @@ Transform:
   m_Father: {fileID: 1702869900}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &288874869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 288874870}
+  - component: {fileID: 288874871}
+  m_Layer: 0
+  m_Name: RadarSoundEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &288874870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288874869}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1055056601}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &288874871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288874869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ced85d331669149a3e7a7910581a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SingleShotSoundEmitterPrefabs:
+  - {fileID: 6726888634861656789, guid: 4454673045bbe544cbe25e05bb556959, type: 3}
+  - {fileID: 2034551260779522054, guid: fb5f74851bc6e594b958b0e68f686948, type: 3}
+  - {fileID: 3204040279419079048, guid: 9f5ed52eb15d94041881c77db7bfd020, type: 3}
+  - {fileID: 627293066985268342, guid: 65d4fed5d83079a4080d35d60d0f283c, type: 3}
+  - {fileID: 6143216441786942540, guid: e6eba929df82c7d4880beb9569322771, type: 3}
+  - {fileID: 3001435313371445871, guid: 33adcd0e8c4abe84397aefc30b16782b, type: 3}
+  SustainedSoundEmitterPrefabs:
+  - {fileID: 7744006775073396503, guid: 0b8082995a12d9a419ec8f8bf9b66fa9, type: 3}
 --- !u!1 &366001722
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,6 +834,7 @@ GameObject:
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -900,6 +953,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eca58200914f074495496ca7000c945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ced85d331669149a3e7a7910581a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SingleShotSoundEmitterPrefabs:
+  - {fileID: 3001435313371445871, guid: 33adcd0e8c4abe84397aefc30b16782b, type: 3}
+  SustainedSoundEmitterPrefabs: []
 --- !u!1 &523096631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,7 +1718,7 @@ Transform:
   - {fileID: 2104944867}
   - {fileID: 1083620407}
   m_Father: {fileID: 1055056601}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &773824306
 MonoBehaviour:
@@ -2089,6 +2157,7 @@ MonoBehaviour:
   Camera: {fileID: 519420031}
   SineComparisionModeRoot: {fileID: 757517334}
   RadarModeRoot: {fileID: 1055056600}
+  SoundSourceMaster: {fileID: 519420035}
 --- !u!1 &944178002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2499,6 +2568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeProvider: {fileID: 1055056602}
+  RadarSoundSource: {fileID: 288874871}
   VehicleSelectionManager: {fileID: 402511458}
   RocketSpawner: {fileID: 1419756540}
 --- !u!4 &1055056601
@@ -2512,6 +2582,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 288874870}
   - {fileID: 1702869900}
   - {fileID: 1406560789}
   - {fileID: 1238075349}
@@ -3125,7 +3196,7 @@ Transform:
   - {fileID: 1042845148}
   - {fileID: 1086341647}
   m_Father: {fileID: 1055056601}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1253174111
 GameObject:
@@ -3618,7 +3689,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1055056601}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1419756538
 GameObject:
@@ -3664,6 +3735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679c551d0975f2b42acfec112ec005bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundSourceMaster: {fileID: 288874871}
   RocketPrefab: {fileID: 4832451462402967827, guid: bed744ad6e2f76b42b49f357618d6485,
     type: 3}
   RocketStartMarker: {fileID: 910963448}
@@ -5081,7 +5153,7 @@ Transform:
   - {fileID: 259262418}
   - {fileID: 222692800}
   m_Father: {fileID: 1055056601}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1716532426
 GameObject:
@@ -5869,6 +5941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af33c75dd9394409c09852f44d9a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeProvider: {fileID: 1055056602}
+  SoundSourceMaster: {fileID: 288874871}
 --- !u!4 &2104944867
 Transform:
   m_ObjectHideFlags: 0
