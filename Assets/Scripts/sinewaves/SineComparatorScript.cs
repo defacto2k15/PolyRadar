@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Sound;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = System.Random;
 
 public class SineComparatorScript : MonoBehaviour
 {
+    public SoundSourceMasterOC SoundSourceMaster;
     public SinewaveScript target, response;
     public bool MatchIsAchieved;
     public float Epsilon = 0.2f;
@@ -14,6 +16,15 @@ public class SineComparatorScript : MonoBehaviour
     public Color dotColorSuccess, responseDotColorNeutral, targetDotColorNeutral;
     public int FrameCountSinceMatch = 0;
     public UnityEvent MatchAchievedEvent;
+
+    private PerpetualSoundEmitterOC _alignedEmitter;
+    private PerpetualSoundEmitterOC _misalignedEmitter;
+
+    void Start()
+    {
+        _alignedEmitter = SoundSourceMaster.StartPerpetualSound(PerpetualSoundKind.OscilloscopeAligned);
+        _misalignedEmitter = SoundSourceMaster.StartPerpetualSound(PerpetualSoundKind.OscilloscopeMisaligned);
+    }
 
     void Update()
     {
@@ -32,7 +43,12 @@ public class SineComparatorScript : MonoBehaviour
                 target.setDotColor(i, targetDotColorNeutral);
             }
         }
-        if (sum/(float)target.DotsCount > (1f-Tolerance))
+
+        var matchFactor = Mathf.Clamp01(sum/(float)target.DotsCount);
+        _alignedEmitter.ChangeVolumeMultiplication( Mathf.Clamp01(matchFactor+0.1f));
+        _misalignedEmitter.ChangeVolumeMultiplication( Mathf.Clamp01(1-matchFactor+0.1f));
+
+        if (matchFactor > (1f-Tolerance))
         {
             FrameCountSinceMatch++;
         }

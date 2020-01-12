@@ -13,7 +13,6 @@ namespace Assets.Scripts.Sound
         RocketStart,
         RocketExplosion,
         TargetExplosion,
-        RocketDirectionChange,
 
         TargetIsFoe,
         TargetIsFriend,
@@ -22,7 +21,7 @@ namespace Assets.Scripts.Sound
 
     }
         
-    public enum SustainedSoundKind
+    public enum PerpetualSoundKind
     {
         RocketIdle,
         RadarBackground,
@@ -32,5 +31,13 @@ namespace Assets.Scripts.Sound
         OscilloscopeMisaligned,
         OscilloscopeAligned,
 
+    }
+
+    public enum SustainedSoundKind
+    {
+        RocketDirectionChange,
+        //SynchronizedLines,
+        //OscilloscopeMisaligned,
+        //OscilloscopeAligned,
     }
 }

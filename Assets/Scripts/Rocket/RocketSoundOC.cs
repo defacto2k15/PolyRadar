@@ -11,11 +11,11 @@ namespace Assets.Scripts.Rocket
     public class RocketSoundOC : MonoBehaviour
     {
         public SoundSourceMasterOC SoundMaster;
-        private SustainedSoundEmitterOC _idleAudioSource;
+        private PerpetualSoundEmitterOC _idleAudioSource;
 
         public void StartIdleSound()
         {
-            _idleAudioSource = SoundMaster.StartSustainedSound(SustainedSoundKind.RocketIdle);
+            _idleAudioSource = SoundMaster.StartPerpetualSound(PerpetualSoundKind.RocketIdle);
         }
 
         public void StartRocketStartSound()

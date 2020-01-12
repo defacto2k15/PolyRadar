@@ -398,14 +398,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SingleShotSoundEmitterPrefabs:
-  - {fileID: 6726888634861656789, guid: 4454673045bbe544cbe25e05bb556959, type: 3}
+  - {fileID: 8536068811574996973, guid: 4454673045bbe544cbe25e05bb556959, type: 3}
   - {fileID: 2034551260779522054, guid: fb5f74851bc6e594b958b0e68f686948, type: 3}
   - {fileID: 3204040279419079048, guid: 9f5ed52eb15d94041881c77db7bfd020, type: 3}
   - {fileID: 627293066985268342, guid: 65d4fed5d83079a4080d35d60d0f283c, type: 3}
   - {fileID: 6143216441786942540, guid: e6eba929df82c7d4880beb9569322771, type: 3}
   - {fileID: 3001435313371445871, guid: 33adcd0e8c4abe84397aefc30b16782b, type: 3}
-  SustainedSoundEmitterPrefabs:
+  PerpetualSoundEmitterPrefabs:
   - {fileID: 7744006775073396503, guid: 0b8082995a12d9a419ec8f8bf9b66fa9, type: 3}
+  - {fileID: 6837014977179110471, guid: 052f6dcc6d46b7f419d15d445c48b668, type: 3}
+  SustainedSoundEmitterPrefabs:
+  - {fileID: 1887020643126612733, guid: 2aa2d43b6b535bb49a612dce2530494d, type: 3}
 --- !u!1 &366001722
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SingleShotSoundEmitterPrefabs:
   - {fileID: 3001435313371445871, guid: 33adcd0e8c4abe84397aefc30b16782b, type: 3}
+  PerpetualSoundEmitterPrefabs: []
   SustainedSoundEmitterPrefabs: []
 --- !u!1 &523096631
 GameObject:
@@ -1185,7 +1189,7 @@ Transform:
   - {fileID: 985040229}
   - {fileID: 1156778940}
   m_Father: {fileID: 816535473}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &583029232
 GameObject:
@@ -1674,6 +1678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752c4e059cd8c0941b2abd13a0233cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundSourceMaster: {fileID: 915226639}
   SineUiRoot: {fileID: 870570494}
   SineComparator: {fileID: 976850690}
   MatchText: {fileID: 1155849519}
@@ -2158,6 +2163,57 @@ MonoBehaviour:
   SineComparisionModeRoot: {fileID: 757517334}
   RadarModeRoot: {fileID: 1055056600}
   SoundSourceMaster: {fileID: 519420035}
+--- !u!1 &915226637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 915226638}
+  - component: {fileID: 915226639}
+  m_Layer: 0
+  m_Name: SineSoundEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &915226638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915226637}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 816535473}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &915226639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915226637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ced85d331669149a3e7a7910581a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SingleShotSoundEmitterPrefabs:
+  - {fileID: 6997669877773928560, guid: 2248d283d979e2841a4383f2b02ec0a1, type: 3}
+  - {fileID: 1111935735208698709, guid: 96fbbec4a0e38934eb0274334b3ee80c, type: 3}
+  PerpetualSoundEmitterPrefabs:
+  - {fileID: 5626626849256392149, guid: 63b520fa5644b2249a87887170a9bbb2, type: 3}
+  - {fileID: 3900253254224176202, guid: f2a28e2a5f6e00d4aa85e6db203bde9e, type: 3}
+  - {fileID: 6020533425208613169, guid: 905fc4890fbdda94aa81260bac395d2a, type: 3}
+  SustainedSoundEmitterPrefabs: []
 --- !u!1 &944178002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,7 +2875,7 @@ Transform:
   - {fileID: 1968104618}
   - {fileID: 1423130082}
   m_Father: {fileID: 816535473}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1155849519
 MonoBehaviour:
@@ -2833,6 +2889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50cb932f7d129734a80ca36ee7d350d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundSourceMaster: {fileID: 915226639}
   FriendTextObject: {fileID: 1439825827}
   FoeTextObject: {fileID: 1423130078}
   FriendInactiveColor: {r: 0.009469607, g: 0.103773594, b: 0, a: 0}
@@ -5095,6 +5152,11 @@ PrefabInstance:
       propertyPath: targetDotColorNeutral.b
       value: 0.6531324
       objectReference: {fileID: 0}
+    - target: {fileID: 3291582404758846624, guid: 458620e5bf2c3714d853662c2d0f14e6,
+        type: 3}
+      propertyPath: SoundSourceMaster
+      value: 
+      objectReference: {fileID: 915226639}
     - target: {fileID: 3291582404775925689, guid: 458620e5bf2c3714d853662c2d0f14e6,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -5190,7 +5252,7 @@ Transform:
   - {fileID: 944178003}
   - {fileID: 1828726133}
   m_Father: {fileID: 816535473}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1731167890
 PrefabInstance:

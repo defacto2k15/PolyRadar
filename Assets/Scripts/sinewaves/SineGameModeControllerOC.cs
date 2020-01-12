@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.sinewaves;
+using Assets.Scripts.Sound;
 using Assets.Scripts.Vehicles;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ namespace Assets.Scripts
 {
     public class SineGameModeControllerOC : SingleGameModeController
     {
+        public SoundSourceMasterOC SoundSourceMaster;
         public GameObject SineUiRoot;
         public SineComparatorScript SineComparator;
         public SineMatchTextOC MatchText;
@@ -21,6 +23,11 @@ namespace Assets.Scripts
                 SineComparator.GenerateTargetSineParameters(_currentVehicleDetails.ID);
             }
             get { return _currentVehicleDetails; }
+        }
+
+        void Start()
+        {
+            SoundSourceMaster.StartPerpetualSound(PerpetualSoundKind.OscilloscopeBackground);
         }
 
         public override void DisableMode()

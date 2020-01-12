@@ -27,10 +27,12 @@ public class RocketSpawnerScript : MonoBehaviour
 
             if (Input.GetKey(KeyCode.T))
             {
+                SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
                 RocketStartAngle += 0.01f;
             }
             else if (Input.GetKey(KeyCode.Y))
             {
+                SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
                 RocketStartAngle -= 0.01f;
             }
 

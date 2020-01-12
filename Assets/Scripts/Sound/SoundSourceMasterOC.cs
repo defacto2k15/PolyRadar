@@ -10,7 +10,14 @@ namespace Assets.Scripts.Sound
     public class SoundSourceMasterOC : MonoBehaviour
     {
         public List<SingleShotSoundEmitterOC> SingleShotSoundEmitterPrefabs;
+        public List<PerpetualSoundEmitterOC> PerpetualSoundEmitterPrefabs;
         public List<SustainedSoundEmitterOC> SustainedSoundEmitterPrefabs;
+        private List<SustainedSoundEmitterOC> SustainedSoundEmitters;
+
+        public void Start()
+        {
+            SustainedSoundEmitters = SustainedSoundEmitterPrefabs.Select(c => Instantiate(c, transform, true).GetComponent<SustainedSoundEmitterOC>()).ToList();
+        }
 
         public void StartOneShotSound(SingleShotSoundKind kind)
         {
@@ -18,10 +25,15 @@ namespace Assets.Scripts.Sound
             Instantiate(prefab, this.transform, true);
         }
 
-        public SustainedSoundEmitterOC StartSustainedSound(SustainedSoundKind kind)
+        public PerpetualSoundEmitterOC StartPerpetualSound(PerpetualSoundKind kind)
         {
-            var prefab = SustainedSoundEmitterPrefabs.First(c => c.Kind == kind);
-            return Instantiate(prefab, this.transform, true).GetComponent<SustainedSoundEmitterOC>();
+            var prefab = PerpetualSoundEmitterPrefabs.First(c => c.Kind == kind);
+            return Instantiate(prefab, this.transform, true).GetComponent<PerpetualSoundEmitterOC>();
+        }
+
+        public void PlaySustainedSound(SustainedSoundKind kind)
+        {
+            SustainedSoundEmitters.First(c => c.Kind == kind).Play();
         }
     }
 }

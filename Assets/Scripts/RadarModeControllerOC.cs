@@ -35,6 +35,11 @@ namespace Assets.Scripts
             }
         }
 
+        void Start()
+        {
+            RadarSoundSource.StartPerpetualSound(PerpetualSoundKind.RadarBackground);
+        }
+
         public void Update()
         {
             if (_inputEnabled)
