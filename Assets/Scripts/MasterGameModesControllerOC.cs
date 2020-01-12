@@ -61,6 +61,12 @@ namespace Assets.Scripts
                 SineComparisionModeRoot.DisableMode();
 
                 mainCameraAnimationController.MoveToRadar();
+
+                if (SineComparisionModeRoot.WasMatchAchieved)
+                {
+                    RadarModeRoot.UnveilAffinityOfSelectedVehicle();
+                }
+                RadarModeRoot.EnableMode();
             }
             else
             {
@@ -74,23 +80,13 @@ namespace Assets.Scripts
                 SineComparisionModeRoot.CurrentVehicleDetails = selectedVehicleDetails;
 
                 mainCameraAnimationController.MoveToSine();
+
+                SineComparisionModeRoot.EnableMode();
             }
 
             SoundSourceMaster.StartOneShotSound(SingleShotSoundKind.ModeChange);
             yield return mainCameraAnimationController.WaitForTransitionAnimationToEnd();
 
-            if (newMode == GameMode.RadarMode)
-            {
-                if (SineComparisionModeRoot.WasMatchAchieved)
-                {
-                    RadarModeRoot.UnveilAffinityOfSelectedVehicle();
-                }
-                RadarModeRoot.EnableMode();
-            }
-            else
-            {
-                SineComparisionModeRoot.EnableMode();
-            }
 
             _currentMode = newMode;
             _duringModeChange = false;

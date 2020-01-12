@@ -16,19 +16,19 @@ namespace Assets.Scripts.Sound
 
         public void Start()
         {
-            SustainedSoundEmitters = SustainedSoundEmitterPrefabs.Select(c => Instantiate(c, transform, true).GetComponent<SustainedSoundEmitterOC>()).ToList();
+            SustainedSoundEmitters = SustainedSoundEmitterPrefabs.Select(c => Instantiate(c, transform, false).GetComponent<SustainedSoundEmitterOC>()).ToList();
         }
 
         public void StartOneShotSound(SingleShotSoundKind kind)
         {
             var prefab = SingleShotSoundEmitterPrefabs.First(c => c.Kind == kind);
-            Instantiate(prefab, this.transform, true);
+            Instantiate(prefab, this.transform,false);
         }
 
         public PerpetualSoundEmitterOC StartPerpetualSound(PerpetualSoundKind kind)
         {
             var prefab = PerpetualSoundEmitterPrefabs.First(c => c.Kind == kind);
-            return Instantiate(prefab, this.transform, true).GetComponent<PerpetualSoundEmitterOC>();
+            return Instantiate(prefab, this.transform, false).GetComponent<PerpetualSoundEmitterOC>();
         }
 
         public void PlaySustainedSound(SustainedSoundKind kind)

@@ -2213,6 +2213,7 @@ MonoBehaviour:
   - {fileID: 5626626849256392149, guid: 63b520fa5644b2249a87887170a9bbb2, type: 3}
   - {fileID: 3900253254224176202, guid: f2a28e2a5f6e00d4aa85e6db203bde9e, type: 3}
   - {fileID: 6020533425208613169, guid: 905fc4890fbdda94aa81260bac395d2a, type: 3}
+  - {fileID: 795263451258068072, guid: 08639771e94ebcf43a6d6d80756a5b67, type: 3}
   SustainedSoundEmitterPrefabs: []
 --- !u!1 &944178002
 GameObject:
@@ -3023,6 +3024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9693012c86907964fa15438da14cb1fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundSourceMaster: {fileID: 915226639}
   Comparator: {fileID: 976850690}
 --- !u!1001 &1176623382
 PrefabInstance:
