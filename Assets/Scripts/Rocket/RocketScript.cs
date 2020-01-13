@@ -27,14 +27,13 @@ namespace Assets.Scripts.Rocket
         {
                 Vector3 newPosition;
                 var z = Vector3.up;
-                if (Input.GetKey("left"))
+                if (Input.GetKey("right"))
                 {
-
                     velocity = Quaternion.AngleAxis(rotationSpeed, z) * velocity;
                     transform.rotation = Quaternion.AngleAxis(rotationSpeed, z) *transform.rotation;
                 }
 
-                if (Input.GetKey("right"))
+                if (Input.GetKey("left"))
                 {
                     velocity = Quaternion.AngleAxis(-rotationSpeed, z) * velocity;
                     transform.rotation = Quaternion.AngleAxis(-rotationSpeed, z) *transform.rotation;
