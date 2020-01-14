@@ -29,7 +29,6 @@ namespace Assets.Scripts.Vehicles
         void Start()
         {
             _sound = GetComponent<VehicleSoundOC>();
-            Debug.Log("STR: "+_sound);
         }
 
         private void UpdateDirection(Vector2 movementDelta)

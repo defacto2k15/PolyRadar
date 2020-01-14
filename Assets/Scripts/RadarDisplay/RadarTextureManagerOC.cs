@@ -101,16 +101,30 @@ namespace Assets.Scripts.OscilloscopeDisplay
         {
             _beamStart = Mathf.Repeat(beamStart,360);
             _beamDelta = beamDelta;
+            Debug.Log(_beamDelta);
         }
 
         public bool AngleIsInRange(float angle)
         {
+            var start = _beamStart;
+            var delta = _beamDelta;
+
+            if (delta < 0)
+            {
+                delta = -delta;
+                start = start - delta;
+                if (start < 0)
+                {
+                    start = start + 360;
+                }
+            }
+
             angle = Mathf.Repeat(angle, 360);
-            var b1 = _beamStart < angle && (_beamStart+_beamDelta)>= angle;
-            if (_beamStart + _beamDelta > 360)
+            var b1 = start < angle && (start+delta)>= angle;
+            if (start + delta > 360)
             {
                 angle = angle + 360;
-                b1 |= _beamStart < angle && (_beamStart+_beamDelta)>= angle;
+                b1 |= start < angle && (start+delta)>= angle;
             }
 
             return b1;
