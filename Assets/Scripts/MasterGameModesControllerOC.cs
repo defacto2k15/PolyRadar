@@ -30,14 +30,7 @@ namespace Assets.Scripts
             {
                 if (Input.GetKeyDown(KeyCode.P))
                 {
-                    if (_currentMode == GameMode.RadarMode)
-                    {
-                        StartCoroutine(ChangeMode(GameMode.SineMode));
-                    }
-                    else
-                    {
-                        StartCoroutine(ChangeMode(GameMode.RadarMode));
-                    }
+                    ToggleMode();
                 }
             }
 
@@ -50,6 +43,19 @@ namespace Assets.Scripts
                 Camera.GetComponent<MainCameraAnimationControllerOC>().MoveToSine();
             }
         }
+
+        public void ToggleMode()
+        {
+            if (_currentMode == GameMode.RadarMode)
+            {
+                StartCoroutine(ChangeMode(GameMode.SineMode));
+            }
+            else
+            {
+                StartCoroutine(ChangeMode(GameMode.RadarMode));
+            }
+        }
+
 
         public IEnumerator ChangeMode(GameMode newMode)
         {

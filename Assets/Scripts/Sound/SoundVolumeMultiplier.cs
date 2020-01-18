@@ -10,6 +10,7 @@ namespace Assets.Scripts.Sound
 
         public SoundVolumeMultiplier(AudioSource source, float currentMultiplicationValue)
         {
+            Assert.IsNotNull(source);
             _source = source;
             _currentMultiplicationValue = currentMultiplicationValue;
         }

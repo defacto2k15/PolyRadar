@@ -45,8 +45,8 @@ public class SineComparatorScript : MonoBehaviour
         }
 
         var matchFactor = Mathf.Clamp01(sum/(float)target.DotsCount);
-        _alignedEmitter.ChangeVolumeMultiplication( Mathf.Clamp01(matchFactor+0.1f));
-        _misalignedEmitter.ChangeVolumeMultiplication( Mathf.Clamp01(1-matchFactor+0.1f));
+        _alignedEmitter.ChangeVolumeMultiplication(Mathf.Clamp01(matchFactor + 0.1f));
+        _misalignedEmitter.ChangeVolumeMultiplication(Mathf.Clamp01(1 - matchFactor + 0.1f));
 
         if (matchFactor > (1f-Tolerance))
         {

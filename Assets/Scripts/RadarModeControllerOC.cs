@@ -46,21 +46,14 @@ namespace Assets.Scripts
             {
                 if (_condition == RadarModeCondition.SearchingTarget)
                 {
-                    int selectedMarkerOffset = 0;
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        RadarSoundSource.StartOneShotSound(SingleShotSoundKind.TargetChange);
-                        selectedMarkerOffset = 1;
-                    }
-                    else if (Input.GetKeyDown(KeyCode.S))
-                    {
-                        RadarSoundSource.StartOneShotSound(SingleShotSoundKind.TargetChange);
-                        selectedMarkerOffset = -1;
+                        ChangeSelectedTarget(-1);
                     }
 
-                    if (VehicleSelectionManager.HasSelectableVehicle && selectedMarkerOffset != 0)
+                    if (Input.GetKeyDown(KeyCode.S))
                     {
-                        VehicleSelectionManager.ChangeVehicleSelection(selectedMarkerOffset);
+                        ChangeSelectedTarget(1);
                     }
 
                     if (VehicleSelectionManager.HasSelectedVehicle)
@@ -81,8 +74,7 @@ namespace Assets.Scripts
                         }
                     }
 
-
-                    if (FindObjectOfType<RocketScript>()!=null)
+                    if (FindObjectOfType<RocketScript>() != null)
                     {
                         _condition = RadarModeCondition.SteeringRocket;
                     }
@@ -94,6 +86,15 @@ namespace Assets.Scripts
                         _condition = RadarModeCondition.SearchingTarget;
                     }
                 }
+            }
+        }
+
+        public void ChangeSelectedTarget(int selectedMarkerOffset)
+        {
+            if (VehicleSelectionManager.HasSelectableVehicle)
+            {
+                RadarSoundSource.StartOneShotSound(SingleShotSoundKind.TargetChange);
+                VehicleSelectionManager.ChangeVehicleSelection(selectedMarkerOffset);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Sound
 {
@@ -8,7 +9,7 @@ namespace Assets.Scripts.Sound
         public PerpetualSoundKind Kind;
         private SoundVolumeMultiplier _multiplier;
 
-        void Start()
+        void Awake()
         {
             _multiplier = new SoundVolumeMultiplier(GetComponent<AudioSource>(), 1);
         }
@@ -20,7 +21,15 @@ namespace Assets.Scripts.Sound
 
         public void ChangeVolumeMultiplication(float newMultiplier)
         {
-            _multiplier.ChangeMultiplication(newMultiplier);
+            try
+            {
+                _multiplier.ChangeMultiplication(newMultiplier);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
