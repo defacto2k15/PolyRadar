@@ -27,18 +27,28 @@ public class RocketSpawnerScript : MonoBehaviour
 
             if (Input.GetKey(KeyCode.T))
             {
-                SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
-                RocketStartAngle += 0.01f;
+                RotateStartPointLeft();
             }
             else if (Input.GetKey(KeyCode.Y))
             {
-                SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
-                RocketStartAngle -= 0.01f;
+                RotateStartPointRight();
             }
 
             var oldRotation = RocketStartMarker.transform.rotation.eulerAngles;
             RocketStartMarker.transform.rotation = Quaternion.Euler(oldRotation.x, RocketStartAngle * Mathf.Rad2Deg * -1, oldRotation.z);
         }
+    }
+
+    public void RotateStartPointRight()
+    {
+        SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
+        RocketStartAngle -= 0.01f;
+    }
+
+    public void RotateStartPointLeft()
+    {
+        SoundSourceMaster.PlaySustainedSound(SustainedSoundKind.RocketDirectionChange);
+        RocketStartAngle += 0.01f;
     }
 
     private void SpawnRocket()

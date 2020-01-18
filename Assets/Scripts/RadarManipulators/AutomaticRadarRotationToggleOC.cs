@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,49 +8,23 @@ using UnityEngine;
 
 namespace Assets.Scripts.RadarManipulators
 {
-    [RequireComponent(typeof(MaterialPropertyBlockColorSetterOC ))]
     public class AutomaticRadarRotationToggleOC : MonoBehaviour
     {
-        [SerializeField] private Color _enabledColor;
-        [SerializeField] private Color _disabledColor;
-
-        [SerializeField] private RadarAutomaticRotationDirectorOC _rotationDirector;
-
-        private MaterialPropertyBlockColorSetterOC _colorSetter;
-        private bool _wasEnabled = false;
-
-        void Start()
-        {
-            _colorSetter = GetComponent<MaterialPropertyBlockColorSetterOC>();
-        }
+        [SerializeField] private RadarAutomaticRotationDirectorOC rotationDirector;
+        [SerializeField] private PushButtonOC pushButtonOc;
 
         void Update()
         {
-            if (_rotationDirector.AutomaticRotationEnabled != _wasEnabled)
+            if (rotationDirector.AutomaticRotationEnabled != pushButtonOc.IsOn)
             {
-                _wasEnabled = _rotationDirector.AutomaticRotationEnabled;
-                UpdateColor(_wasEnabled);
+                pushButtonOc.IsOn = rotationDirector.AutomaticRotationEnabled;
             }
         }
 
-        void OnMouseDown()
+        public void ReactToToggleButtonClicked(bool isOn)
         {
-            var newEnabled = !_rotationDirector.AutomaticRotationEnabled;
-            _rotationDirector.AutomaticRotationEnabled = newEnabled;
-            UpdateColor(newEnabled);
+            rotationDirector.AutomaticRotationEnabled = isOn;
         }
 
-        private void UpdateColor(bool isEnabled)
-        {
-            if (isEnabled)
-            {
-                _colorSetter.ChangeColorAndUpdate(_enabledColor);
-            }
-            else
-            {
-                _colorSetter.ChangeColorAndUpdate(_disabledColor);
-            }
-
-        }
     }
 }
