@@ -25,6 +25,5 @@ namespace Assets.Scripts.RadarManipulators
         {
             rotationDirector.AutomaticRotationEnabled = isOn;
         }
-
     }
 }

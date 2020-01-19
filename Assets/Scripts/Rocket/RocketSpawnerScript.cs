@@ -4,6 +4,7 @@ using Assets.Scripts.Rocket;
 using Assets.Scripts.Sound;
 using Assets.Scripts.Vehicles;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class RocketSpawnerScript : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class RocketSpawnerScript : MonoBehaviour
     public GameObject RocketStartMarker;
     public float RocketStartAngle;
     private bool _inputEnabled;
+    private RocketScript _currentCreatedRocket;
 
     void Update()
     {
@@ -51,8 +53,12 @@ public class RocketSpawnerScript : MonoBehaviour
         RocketStartAngle += 0.01f;
     }
 
-    private void SpawnRocket()
+    public bool RocketIsPresent => !(_currentCreatedRocket == null);
+
+    public void SpawnRocket()
     {
+        Assert.IsTrue(_currentCreatedRocket==null);
+
         var rocket = Instantiate(RocketPrefab);
         rocket.transform.SetParent(transform);
         rocket.transform.localPosition= new Vector3(0,0.1f, 0);
@@ -62,6 +68,16 @@ public class RocketSpawnerScript : MonoBehaviour
         var velocity = new Vector3(initialVelocity2D.x,0, initialVelocity2D.y);
         rocket.GetComponent<RocketScript>().SetVelocity(velocity);
         rocket.GetComponent<RocketSoundOC>().SoundMaster = SoundSourceMaster;
+
+        _currentCreatedRocket = rocket.GetComponent<RocketScript>();
+    }
+
+    public void SteerRocket(Vector2 rocketMovementChange)
+    {
+        if (!(_currentCreatedRocket == null))
+        {
+            _currentCreatedRocket?.Steer(rocketMovementChange);
+        }
     }
 
 

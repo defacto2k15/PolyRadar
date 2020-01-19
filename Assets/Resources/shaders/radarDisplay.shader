@@ -104,8 +104,10 @@
 				float3 radarInfluence = radarColor * _RadarIntensityMultiplier;
 				float3 markersInfluence = markersColor * _MarkersIntensityMultiplier;
 				float4 backgroundSample = tex2D(_BackgroundTexture, i.uv);
+				backgroundSample.rgb *= backgroundSample.a;
 
-				float3 finalColor = indicatorInfluence + radarInfluence + battlegroundBackgroundInfluence + markersInfluence + backgroundSample.rgb;
+				float3 finalColor = indicatorInfluence + radarInfluence + battlegroundBackgroundInfluence + markersInfluence;
+				finalColor += backgroundSample.rgb * saturate((1 - max(max(finalColor.r, finalColor.g), finalColor.b)*4));
 				float maxComponent = max(max(finalColor.r, finalColor.g), finalColor.b);
 
 				finalColor = lerp(finalColor, 1, maxComponent*_LerpToWhiteFactor);

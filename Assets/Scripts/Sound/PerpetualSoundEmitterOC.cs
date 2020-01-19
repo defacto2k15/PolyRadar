@@ -21,15 +21,7 @@ namespace Assets.Scripts.Sound
 
         public void ChangeVolumeMultiplication(float newMultiplier)
         {
-            try
-            {
-                _multiplier.ChangeMultiplication(newMultiplier);
-
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            _multiplier.ChangeMultiplication(newMultiplier);
         }
     }
 }

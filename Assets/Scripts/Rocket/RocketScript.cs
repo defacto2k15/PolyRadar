@@ -25,43 +25,69 @@ namespace Assets.Scripts.Rocket
 
         void Update()
         {
-                Vector3 newPosition;
-                var z = Vector3.up;
+                transform.position =transform.position + velocity;
+
                 if (Input.GetKey("right"))
                 {
-                    velocity = Quaternion.AngleAxis(rotationSpeed, z) * velocity;
-                    transform.rotation = Quaternion.AngleAxis(rotationSpeed, z) *transform.rotation;
+                    TurnRocket(1);
                 }
 
                 if (Input.GetKey("left"))
                 {
-                    velocity = Quaternion.AngleAxis(-rotationSpeed, z) * velocity;
-                    transform.rotation = Quaternion.AngleAxis(-rotationSpeed, z) *transform.rotation;
+                    TurnRocket(-1);
                 }
-
-                newPosition =transform.position + velocity;
-
-
                 if (Input.GetKey("up"))
                 {
-                    newPosition += new Vector3(0, HeightChangeSpeed*Time.deltaTime, 0); 
+                    MoveUp(1);
                 }
                 if (Input.GetKey("down"))
                 {
-                    newPosition += new Vector3(0, -HeightChangeSpeed*Time.deltaTime, 0); 
+                    MoveDown(1);
                 }
 
                 if (Input.GetKeyDown(KeyCode.M))
                 {
                     Destroy(this.gameObject);
                 }
-                transform.position = newPosition;
+        }
+
+        private void MoveDown(float magnitude)
+        {
+            transform.position += new Vector3(0, -HeightChangeSpeed * Time.deltaTime, 0)*magnitude;
+        }
+
+        private void MoveUp(float magnitude)
+        {
+            transform.position += new Vector3(0, HeightChangeSpeed * Time.deltaTime, 0)*magnitude;
+        }
+
+        private void TurnRocket(float magnitude)
+        {
+            var z = Vector3.up;
+            var oldVelocityMagnitude = velocity.magnitude;
+            velocity = Quaternion.AngleAxis(rotationSpeed*magnitude, z) * velocity;
+            velocity *=  oldVelocityMagnitude/velocity.magnitude ;
+            transform.rotation = Quaternion.AngleAxis(rotationSpeed*magnitude, z) * transform.rotation;
         }
 
         public void SetVelocity(Vector3 newVelocity)
         {
             velocity = newVelocity * speed;
             transform.rotation = Quaternion.LookRotation(velocity, Vector3.up);
+        }
+
+        public void Steer(Vector2 rocketMovementChange)
+        {
+            if (rocketMovementChange.x > 0)
+            {
+                MoveUp(rocketMovementChange.x);
+            }
+            else
+            {
+                MoveDown(-rocketMovementChange.x);
+            }
+
+            TurnRocket(rocketMovementChange.y);
         }
     }
 }
