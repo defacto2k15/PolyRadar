@@ -87,7 +87,7 @@ namespace Assets.Scripts.Rocket
                 MoveDown(-rocketMovementChange.x);
             }
 
-            TurnRocket(rocketMovementChange.y);
+            TurnRocket(rocketMovementChange.y*-1);
         }
     }
 }
