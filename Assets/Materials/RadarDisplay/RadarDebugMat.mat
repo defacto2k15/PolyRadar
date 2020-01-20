@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BackgroundTexture:
-        m_Texture: {fileID: 2800000, guid: f963a6ec808a69e4fbca46cd251aed3b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6496da2eb0297694b9cf420a3393fdbc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BattlegroundBackgroundTexture:
