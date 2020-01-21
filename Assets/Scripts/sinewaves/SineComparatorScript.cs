@@ -31,7 +31,7 @@ public class SineComparatorScript : MonoBehaviour
         int sum = 0;
         for (int i = 0; i < target.DotsCount; i++)
         {
-            if (Mathf.Abs(target.getDotPosition(i).y - response.getDotPosition(i).y) < Epsilon)
+            if (Mathf.Abs(target.getDotLocalPosition(i).y- response.getDotLocalPosition(i).y) < Epsilon)
             {
                 sum++;
                 response.setDotColor(i, dotColorSuccess);

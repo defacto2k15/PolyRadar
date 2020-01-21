@@ -22,8 +22,7 @@ public class SinewaveScript : MonoBehaviour
     {
         _dots = Enumerable.Range(0, DotsCount).Select(i =>
         {
-            var dot = Instantiate(DotPrefab);
-            dot.transform.SetParent(transform);
+            var dot = Instantiate(DotPrefab, transform);
             dot.name = $"Dot {i}";
 
             dot.transform.localPosition = new Vector3(i / ((float)DotsCount - 1), 0, 0);
@@ -61,6 +60,11 @@ public class SinewaveScript : MonoBehaviour
     public Vector3 getDotPosition(int i)
     {
         return _dots[i].transform.position;
+    }
+        
+    public Vector3 getDotLocalPosition(int i)
+    {
+        return _dots[i].transform.localPosition;
     }
 
     public void sliderHandlerAmplitude(float f)
