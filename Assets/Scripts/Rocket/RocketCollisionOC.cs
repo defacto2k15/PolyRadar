@@ -20,7 +20,7 @@ namespace Assets.Scripts.Rocket
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag(Tags.FlyingVehicleTag))
+            if (other.gameObject.CompareTag(Tags.FlyingVehicleTag) || other.gameObject.CompareTag(Tags.Building))
             {
                 DestroyRocket();
             }

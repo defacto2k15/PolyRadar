@@ -11,6 +11,7 @@ namespace Assets.Scripts
 {
     public class MasterGameModesControllerOC : MonoBehaviour
     {
+        public int MasterSeed = 0;
         public Camera Camera;
         public SineGameModeControllerOC SineComparisionModeRoot;
         public RadarModeControllerOC RadarModeRoot;

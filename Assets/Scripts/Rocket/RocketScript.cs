@@ -12,7 +12,7 @@ namespace Assets.Scripts.Rocket
     {
         public Vector3 velocity;
         public float speed = 0.01f;
-        public float rotationSpeed = 0.5f;
+        public float rotationSpeed = 1f;
         public float HeightChangeSpeed = 1;
         private RocketSoundOC _sound;
 

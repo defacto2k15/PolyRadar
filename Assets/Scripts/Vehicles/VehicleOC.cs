@@ -26,7 +26,7 @@ namespace Assets.Scripts.Vehicles
         private void Start()
         {
             Affinity = VehicleAffinity.Unknown;
-            Details = VehicleDetails.GenerateRandomDetails(_lastVehicleId++);
+            Details = VehicleDetails.GenerateRandomDetails(_lastVehicleId++ + FindObjectOfType<MasterGameModesControllerOC>().MasterSeed); //TODO repair
         }
 
         public void MyUpdate(Vector2 flatCenter, RadarBeamSetting beamSetting, HeightmapArrayFromWorldSpaceSampler occlusionHeightmapArraySampler)
